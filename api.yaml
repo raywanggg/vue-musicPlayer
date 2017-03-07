@@ -1,0 +1,77 @@
+swagger: '2.0'
+info:
+  title: music-player API
+  description: music-player API
+  version: 1.0.0
+host: localhost
+schemes:
+  - https
+basePath: /api/v1
+produces:
+  - application/json
+paths:
+  /songs:
+    get:
+      summary: songs list
+      description: |
+        获取音乐列表
+      tags:
+        - Music
+      responses:
+        '200':
+          description: An array of songs
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Song'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  '/songs/{id}':
+    get:
+      summary: a song
+      description: |
+        获取单首歌曲
+      tags:
+        - Music
+      parameters:
+        - name: id
+          required: true
+          in: path
+          type: number
+      responses:
+        '200':
+          description: the detail content of a song
+          schema:
+            $ref: '#/definitions/Song'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Song:
+    type: object
+    properties:
+      id:
+        type: number
+        description: Unique identifier.
+      name:
+        type: string
+        description: The name of the song.
+      singer:
+        type: string
+        description: The singer of the song.
+      img_url:
+        type: string
+        description: Image URL representing the song.
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
