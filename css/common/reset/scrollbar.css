@@ -1,0 +1,19 @@
+::-webkit-scrollbar {
+  width: 8px; 
+  background-color: rgba(0, 0, 0, 0);
+  -webkit-border-radius: 100px;
+}
+::-webkit-scrollbar:hover {
+  background-color: rgba(0, 0, 0, 0.09);
+}
+ 
+::-webkit-scrollbar-thumb:vertical {
+  border: 1px solid #4C4A48;
+  background: rgba(0, 0, 0, 0.5);
+  -webkit-border-radius: 100px;
+}
+::-webkit-scrollbar-thumb:vertical:active {
+  border: 1px solid #4C4A48;
+  background: rgba(0, 0, 0, 0.61);
+  -webkit-border-radius: 100px;
+}

@@ -1,0 +1,23 @@
+/*
+全局字体的公共变量
+*/
+
+:root {
+    --font-base: "Microsoft Yahei", "Microsoft Yahei Regular", "微软雅黑", "STXihei", "华文细黑", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-hand: "Lucida Handwriting", "Microsoft Yahei", "微软雅黑", arial;
+    --font-italic: "HelveticaNeue-Italic", "Helvetica Neue Italic", "Microsoft Yahei", "微软雅黑", arial;
+    --font-light: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue";
+    --font-yahei: "Microsoft YaHei", "微软雅黑", "STXihei", "华文细黑";
+    --font-light: "Lantinghei SC Ex tralight";
+    --font-bold: "Microsoft YaHei";
+    --font-ultra-light: "Montserrat ExtraLight", "Montserrat";
+    --font-montserrat: "Montserrat Bold", "Montserrat";
+    --font-xss: 10px;
+    --font-xs: 12px;
+    --font-s: 14px;
+    --font-m: 16px;
+    --font-l: 18px;
+    --font-xl: 20px;
+    --font-xxl: 24px;
+    --font-xxxl: 28px;
+}

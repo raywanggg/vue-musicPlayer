@@ -1,0 +1,8 @@
+/*
+全局颜色的公共变量
+*/
+
+:root {
+    --color-theme: #ea6f5a;
+    --color-font-base-66: #666666;
+}

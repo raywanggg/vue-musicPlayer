@@ -1,0 +1,10 @@
+/*
+全局z-index严格按照以下级别设定，不得单独赋值
+*/
+
+:root {
+    --z-index-s: 1;
+    --z-index-m: 100;
+    --z-index-l: 200;
+    --z-index-max: 9999;
+}
