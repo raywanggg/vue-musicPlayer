@@ -90,7 +90,7 @@ module.exports = {
         historyApiFallback: true,
         host: '0.0.0.0',
         // proxy: proxy,
-        port: 7070
+        port: 8088
     },
 
     devtool: "source-map",
