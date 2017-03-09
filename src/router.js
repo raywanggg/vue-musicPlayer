@@ -1,5 +1,5 @@
 import Welcome from './views/Welcome.vue';
-import Search from './views/search.vue';
+import Search from './views/Search.vue';
 export default [{
         path: '/welcome',
         components: {

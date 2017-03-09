@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import App from './App.vue';
-import * as filters from './filters';
+// import * as filters from './filters';
 import routes from './router';
 
 // var zerqu = window.ZERQU || {};
@@ -34,4 +34,4 @@ new Vue({
 });
 // router.map(views);
 // router.start(App, "#app");
-require('./api').register(router.app);
+// require('./api').register(router.app);
