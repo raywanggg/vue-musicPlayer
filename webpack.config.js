@@ -1,6 +1,6 @@
 var webpack = require("webpack");
 var path = require('path');
-var publicPath = "./build/";
+var publicPath = "/build/";
 // var ExtractTextPlugin = require("extract-text-webpack-plugin");
 // var cssLoader = ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap!postcss-loader");
 // var cssLoader = ExtractTextPlugin.extract({
@@ -26,8 +26,8 @@ module.exports = {
     },
 
     output: {
-        // path: __dirname + publicPath,
-        path: "./build",
+        path: path.join(__dirname, './build/'),
+        // path: __dirname + '/build/',
         filename: 'app.js',
         publicPath: publicPath,
         devtoolModuleFilenameTemplate: function(info) {
