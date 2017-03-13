@@ -1,6 +1,8 @@
 # vue-musicPlayer
-music player with vue
+## music player with vue
 
-npm install
-npm run dev
-localhost:8088
+
+### 1、npm install
+### 1.1、if error, npm install vue-template-compiler
+### 2、npm run dev
+### 3、open localhost:8088 in browser
