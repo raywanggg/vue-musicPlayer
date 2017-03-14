@@ -12,3 +12,4 @@ export default [{
         }
     }
 ]
+// 没有import可以直接components: require()
