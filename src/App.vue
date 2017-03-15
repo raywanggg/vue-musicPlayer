@@ -1,19 +1,29 @@
 <template>
 	<div id="app">
 		<div class="home-wrapper">
-			<div class="home-front">
+			<!-- <transition-group name="turn-page">
+				<div v-show="isShow" @click="isShow = !isShow" class="home-front" key="show1">
+					<div class="welcome-back"></div>
+					<div class="welcome-text">
+						<img src="src/assets/image/home-logo.png">
+						<h1>{{ msg }}</h1>
+					</div>
+					<router-view></router-view>
+				</div>
+				<div  style="background: lightblue;" v-show="!isShow" v-bind:class="[isShow? 'back':'']" class="home-back" key="show2">
+					<h1 style="text-align: center;">this is a test</h1>
+				</div>
+			</transition-group> -->
+			<div @click="isShow = !isShow" v-bind:class="[isShow? '':'front-turn']" class="home-front">
 				<div class="welcome-back"></div>
 				<div class="welcome-text">
 					<img src="src/assets/image/home-logo.png">
 					<h1>{{ msg }}</h1>
 				</div>
-				<div>
-					<!-- 版权信息 -->
-				</div>
 				<router-view></router-view>
 			</div>
-			<div class="home-back">
-				<h1>this is a test</h1>
+			<div  style="background: lightblue;" v-bind:class="[isShow? '':'back-turn']" class="home-back">
+				<h1 style="text-align: center;">this is search page!</h1>
 			</div>
 		</div>
 	</div>
@@ -23,25 +33,36 @@ export default {
 	name: "welcome",
 	data: function() {
 		return {
-			msg: "vue音乐  享生活"
+			msg: "vue音乐  享生活",
+			isShow: true
 		}
 	}
 }
 </script>
 <style>
 	@import "../css/common";
-	/*#app:hover .home-front {
-		transform: rotateY(180deg);
-	}
-	#app:hover .home-back {
-		transform: rotateY(0deg);
-	}
 	.front-turn {
-		transform: rotateY(180deg);
+		transform: rotateY(180deg) !important;
+		
 	}
 	.back-turn {
+		transform: rotateY(0deg) !important;
+		
+	}
+
+	/*.turn-page-leave-active {
+	  	transform: rotateY(90deg);
+	}
+	.turn-page-enter-active {
+		transform: scaleY(0);
+	}
+	.turn-page-enter {
+		transform: scaleY(-1);
+	}
+	.turn-page-leave {
 		transform: rotateY(0deg);
 	}*/
+
 	#app {
 		--webkit-perspective: 1000;
 		display: block;
@@ -61,7 +82,7 @@ export default {
 				width: 100%;
 				height: 100%;
 				backface-visibility: hidden;
-				transition: 0.6s; 
+				transition: all 1s; 
 				transform-style: preserve-3d;
 				top: 0;
 				left: 0;
@@ -72,6 +93,9 @@ export default {
 			.home-back {
 				transform: rotateY(-180deg);
 			}
+			/*.back {
+				transform: scaleY(-1);
+			}*/
 		}
 		.welcome-back {
 			position: absolute;
