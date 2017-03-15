@@ -1,8 +1,8 @@
 <template>
 	<div id="app">
 		<div class="home-wrapper">
-			<!-- <transition-group name="turn-page">
-				<div v-show="isShow" @click="isShow = !isShow" class="home-front" key="show1">
+			<transition name="turn-page" mode="out-in">
+				<div v-if="isShow" @click="isShow = !isShow" class="home-front" key="show1">
 					<div class="welcome-back"></div>
 					<div class="welcome-text">
 						<img src="src/assets/image/home-logo.png">
@@ -10,11 +10,12 @@
 					</div>
 					<router-view></router-view>
 				</div>
-				<div  style="background: lightblue;" v-show="!isShow" v-bind:class="[isShow? 'back':'']" class="home-back" key="show2">
-					<h1 style="text-align: center;">this is a test</h1>
+				<div v-else style="background: lightblue;" class="home-back" key="show2">
+					<h1 style="text-align: center;">this is search page!</h1>
 				</div>
-			</transition-group> -->
-			<div @click="isShow = !isShow" v-bind:class="[isShow? '':'front-turn']" class="home-front">
+			</transition>
+
+			<!-- <div @click="isShow = !isShow" v-bind:class="[isShow? '':'front-turn']" class="home-front">
 				<div class="welcome-back"></div>
 				<div class="welcome-text">
 					<img src="src/assets/image/home-logo.png">
@@ -24,7 +25,7 @@
 			</div>
 			<div  style="background: lightblue;" v-bind:class="[isShow? '':'back-turn']" class="home-back">
 				<h1 style="text-align: center;">this is search page!</h1>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>
@@ -41,27 +42,24 @@ export default {
 </script>
 <style>
 	@import "../css/common";
-	.front-turn {
+	/*.front-turn {
 		transform: rotateY(180deg) !important;
 		
 	}
 	.back-turn {
 		transform: rotateY(0deg) !important;
 		
-	}
+	}*/
 
-	/*.turn-page-leave-active {
+	.turn-page-leave-active {
 	  	transform: rotateY(90deg);
 	}
-	.turn-page-enter-active {
-		transform: scaleY(0);
-	}
 	.turn-page-enter {
-		transform: scaleY(-1);
+		transform: rotateY(-90deg);
 	}
-	.turn-page-leave {
-		transform: rotateY(0deg);
-	}*/
+	.turn-page-enter-active, .turn-page-leave-active {
+		transition: transform 0.6s;
+	}
 
 	#app {
 		--webkit-perspective: 1000;
@@ -73,7 +71,7 @@ export default {
 		border-radius: 5px;
 		.home-wrapper {
 			position: relative;
-			transition: 0.6s;
+			/*transition: 0.6s;*/
 			transform-style: preserve-3d;
 			transform-origin: 50% 100%;
 			box-sizing: border-box;
@@ -82,7 +80,6 @@ export default {
 				width: 100%;
 				height: 100%;
 				backface-visibility: hidden;
-				transition: all 1s; 
 				transform-style: preserve-3d;
 				top: 0;
 				left: 0;
@@ -90,11 +87,8 @@ export default {
 			.home-front {
 				z-index: 2;
 			}
-			.home-back {
+			/*.home-back {
 				transform: rotateY(-180deg);
-			}
-			/*.back {
-				transform: scaleY(-1);
 			}*/
 		}
 		.welcome-back {
