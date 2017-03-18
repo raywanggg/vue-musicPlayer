@@ -1,14 +1,30 @@
-import Welcome from './views/Welcome.vue';
-import Search from './views/Search.vue';
+import Home from './views/Home.vue';
+import Recommend from './views/Recommend.vue';
+import Rank from './views/Rank.vue';
+import Person from './views/Person.vue';
 export default [{
-        path: '/welcome',
+        path: '/home',
         components: {
-            main: Welcome
+            home: Home
         }
     }, {
-        path: '/search',
+        path: '/recommend',
         components: {
-            search: Search
+            home: Home,
+            viewall: Recommend
+            // recommend: Recommend
+        }
+    }, {
+        path: '/rank',
+        components: {
+            home: Home,
+            viewall: Rank
+        }
+    }, {
+        path: '/person',
+        components: {
+            home: Home,
+            viewall: Person
         }
     }
 ]

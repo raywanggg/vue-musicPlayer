@@ -1,31 +1,20 @@
 <template>
 	<div id="app">
 		<div class="home-wrapper">
-			<transition name="turn-page" mode="out-in">
+			<transition name="turn-page" mode="out-in" v-on:enter="toggleRouter">
 				<div v-if="isShow" @click="isShow = !isShow" class="home-front" key="show1">
 					<div class="welcome-back"></div>
 					<div class="welcome-text">
 						<img src="src/assets/image/home-logo.png">
 						<h1>{{ msg }}</h1>
+						<h3>轻触进入</h3>
 					</div>
-					<router-view></router-view>
 				</div>
-				<div v-else style="background: lightblue;" class="home-back" key="show2">
-					<h1 style="text-align: center;">this is search page!</h1>
+				<div v-else class="home-back" key="show2">
+					<!-- <h1 style="text-align: center;">this is search page!</h1> -->
+					<router-view name="home"></router-view>
 				</div>
 			</transition>
-
-			<!-- <div @click="isShow = !isShow" v-bind:class="[isShow? '':'front-turn']" class="home-front">
-				<div class="welcome-back"></div>
-				<div class="welcome-text">
-					<img src="src/assets/image/home-logo.png">
-					<h1>{{ msg }}</h1>
-				</div>
-				<router-view></router-view>
-			</div>
-			<div  style="background: lightblue;" v-bind:class="[isShow? '':'back-turn']" class="home-back">
-				<h1 style="text-align: center;">this is search page!</h1>
-			</div> -->
 		</div>
 	</div>
 </template>
@@ -37,20 +26,16 @@ export default {
 			msg: "vue音乐  享生活",
 			isShow: true
 		}
+	},
+	methods: {
+		toggleRouter: function() {
+			this.$router.push("home");
+		}
 	}
 }
 </script>
 <style>
 	@import "../css/common";
-	/*.front-turn {
-		transform: rotateY(180deg) !important;
-		
-	}
-	.back-turn {
-		transform: rotateY(0deg) !important;
-		
-	}*/
-
 	.turn-page-leave-active {
 	  	transform: rotateY(90deg);
 	}
@@ -102,9 +87,9 @@ export default {
 		}
 		.welcome-text {
 			position: relative;
-			margin: 100px auto; 
+			margin: 100px auto auto; 
 			width: 300px;
-			height: 200px;
+			height: calc(100% - 100px);
 			img {
 				width: 128px;
 				height: 128px;
@@ -117,7 +102,24 @@ export default {
 				/*text-shadow: 2px 2px 4px #dedede;*/
 				text-shadow: 3px 3px 6px #888;
 			}
+			h3 {
+				position: absolute;
+				text-align: center;
+				color: #ea6f5a;
+				font-style: italic;
+				bottom: 50px;
+				left: 0;
+				right: 0;
+			}
 		}
+		/*.front-turn {
+			transform: rotateY(180deg) !important;
+		
+		}
+		.back-turn {
+			transform: rotateY(0deg) !important;
+			
+		}*/
 	}
 	@media (min-width: 1024px) {
 		#app {
