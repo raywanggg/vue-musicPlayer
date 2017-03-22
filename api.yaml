@@ -5,21 +5,112 @@ info:
   version: 1.0.0
 host: localhost
 schemes:
-  - https
+  - http
 basePath: /api/v1
 produces:
   - application/json
 paths:
-  /songs:
+  /songs/mine:
     get:
-      summary: songs list
-      description: |
-        获取音乐列表
+      summary: my songs list
+      description:
+        获取我的音乐列表
+      parameters:
+        - name: page
+          required: false
+          in: query
+          type: number
+          default: 1
+        - name: size
+          required: false
+          in: query
+          type: number
+          default: 8
       tags:
         - Music
       responses:
         '200':
-          description: An array of songs
+          description: the result of the songs list request
+          schema:
+            $ref: '#/definitions/SongsRst'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /songs/rank:
+    get:
+      summary: songs list of ranking
+      description:
+        获取歌曲排名列表
+      parameters:
+        - name: page
+          required: false
+          in: query
+          type: number
+          default: 1
+        - name: size
+          required: false
+          in: query
+          type: number
+          default: 8
+      tags:
+        - Music
+      responses:
+        '200':
+          description: the result of the songs list request
+          schema:
+            $ref: '#/definitions/SongsRst'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /songs/search:
+    get:
+      summary: songs list of search result
+      description:
+        获取歌曲排名列表
+      parameters:
+        - name: key
+          required: true
+          in: query
+          type: string
+        - name: page
+          required: false
+          in: query
+          type: number
+          default: 1
+        - name: size
+          required: false
+          in: query
+          type: number
+          default: 8
+      tags:
+        - Music
+      responses:
+        '200':
+          description: the result of the songs list request
+          schema:
+            $ref: '#/definitions/SongsRst'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /songs/recommend:
+    get:
+      summary: songs list of recommending result
+      description:
+        获取推荐歌曲列表
+      parameters:
+        - name: size
+          required: false
+          in: query
+          type: number
+          default: 8
+      tags:
+        - Music
+      responses:
+        '200':
+          description: the result of the songs list request
           schema:
             type: array
             items:
@@ -50,6 +141,23 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 definitions:
+  SongsRst:
+    type: object
+    properties:
+      data:
+        type: array
+        items: 
+          $ref: '#/definitions/Song'
+        description: the list of songs
+      totalNum:
+        type: number
+        description: the number of total songs
+      page:
+        type: number
+        description: the page number
+      size:
+        type: number
+        description: the number of songs that returned
   Song:
     type: object
     properties:
@@ -59,12 +167,18 @@ definitions:
       name:
         type: string
         description: The name of the song.
-      singer:
+      author:
         type: string
         description: The singer of the song.
-      img_url:
+      md5:
+        type: string
+        description: md5.
+      url:
         type: string
         description: Image URL representing the song.
+      liked:
+        type: number
+        description: The number of likes.
   Error:
     type: object
     properties:
