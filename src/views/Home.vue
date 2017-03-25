@@ -3,9 +3,9 @@
 		<search></search>
 		<content>
 			<ul>
-				<li v-bind:class="[flag == 0? active: '']" v-on:click="flag = 0"><router-link to="/recommend">推荐</router-link></li>
-				<li v-bind:class="[flag == 1? active: '']" v-on:click="flag = 1"><router-link to="/rank">排行</router-link></li>
-				<li v-bind:class="[flag == 2? active: '']" v-on:click="flag = 2"><router-link to="/person">我的</router-link></li>
+				<li v-bind:class="[flag == 0? active: '']" v-on:click="flag = 0"><router-link to="recommend">推荐</router-link></li>
+				<li v-bind:class="[flag == 1? active: '']" v-on:click="flag = 1"><router-link to="rank">排行</router-link></li>
+				<li v-bind:class="[flag == 2? active: '']" v-on:click="flag = 2"><router-link to="person">我的</router-link></li>
 			</ul>
 		</content>
 		<router-view name="viewall"></router-view>
@@ -17,7 +17,7 @@ export default {
 	data: function() {
 		return {
 			flag: 0,
-			active: "active"//data到类的映射
+			active: "active"//bind中绑定的是data中的数据，data到类的映射
 		}
 	},
 	components: {
@@ -46,7 +46,10 @@ export default {
 			border-bottom-color: #ea6f5a;
 		}
 		a {
+			display: inline-block;
 			color: #ea6f5a;
+			width: 100%;
+			height: 100%;
 		}
 	}
 </style>

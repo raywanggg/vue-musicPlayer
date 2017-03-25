@@ -29,7 +29,7 @@ export default {
 	},
 	methods: {
 		toggleRouter: function() {
-			this.$router.push("home");
+			this.$router.push("home/recommend");
 		}
 	}
 }

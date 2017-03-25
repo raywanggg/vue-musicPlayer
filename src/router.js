@@ -6,26 +6,23 @@ export default [{
         path: '/home',
         components: {
             home: Home
-        }
-    }, {
-        path: '/recommend',
-        components: {
-            home: Home,
-            viewall: Recommend
-            // recommend: Recommend
-        }
-    }, {
-        path: '/rank',
-        components: {
-            home: Home,
-            viewall: Rank
-        }
-    }, {
-        path: '/person',
-        components: {
-            home: Home,
-            viewall: Person
-        }
+        },
+        children: [{
+            path: 'recommend',
+            components: {
+                viewall: Recommend
+            }
+        }, {
+            path: 'rank',
+            components: {
+                viewall: Rank
+            }
+        }, {
+            path: 'person',
+            components: {
+                viewall: Person
+            }
+        }]
     }
 ]
 // 没有import可以直接components: require()
