@@ -16,7 +16,7 @@ app.use(staticServe('./static/'));
 
 //router for songs
 router
-    .get('/songs/recommend', co.wrap(function*(ctx, next) {
+    .get('/songs/recommend', co.wrap(function* (ctx, next) {
         let size = parseInt(ctx.request.query.size) || 8;
         let songs = JSON.parse(yield fs.readFile(`./database/songs_list.js`, 'utf8'));
         let result = new Set();
@@ -26,7 +26,7 @@ router
         }
         ctx.body = Array.from(result);
     }))
-    .get('/songs/rank', co.wrap(function*(ctx, next) {
+    .get('/songs/rank', co.wrap(function* (ctx, next) {
         let size = parseInt(ctx.request.query.size) || 8;
         let page = parseInt(ctx.request.query.page) || 1;
         let songs = JSON.parse(yield fs.readFile(`./database/songs_list.js`, 'utf8')).sort((a, b) => b.liked - a.liked);
@@ -39,7 +39,7 @@ router
         };
         ctx.body = result;
     }))
-    .get('/songs/mine', co.wrap(function*(ctx, next) {
+    .get('/songs/mine', co.wrap(function* (ctx, next) {
         let size = parseInt(ctx.request.query.size) || 8;
         let page = parseInt(ctx.request.query.page) || 1;
         let songs = JSON.parse(yield fs.readFile(`./database/songs_list.js`, 'utf8'));
@@ -52,7 +52,7 @@ router
         };
         ctx.body = result;
     }))
-    .get('/songs/search', co.wrap(function*(ctx, next) {
+    .get('/songs/search', co.wrap(function* (ctx, next) {
         let key = ctx.request.query.key;
         if (!key) {
             ctx.body = {
@@ -74,7 +74,7 @@ router
         };
         ctx.body = result;
     }))
-    .get('/songs/:id', co.wrap(function*(ctx, next) {
+    .get('/songs/:id', co.wrap(function* (ctx, next) {
         let songsList = JSON.parse(yield fs.readFile(`./database/songs_list.js`, 'utf8'));
         let result = songsList.find((song) => ctx.params.id == song.id);
         if (!result) {
@@ -87,7 +87,7 @@ router
 
 //router for lyrics
 router
-    .get('/lyrics/:md5', co.wrap(function*(ctx, next) {
+    .get('/lyrics/:md5', co.wrap(function* (ctx, next) {
         ctx.body = '暂无歌词';
     }))
 
@@ -95,6 +95,6 @@ app
     .use(router.routes())
     .use(router.allowedMethods());
 
-app.listen(80, () => {
-    console.log('listening on port 80');
+app.listen(8087, () => {
+    console.log('listening on port 8087');
 });
