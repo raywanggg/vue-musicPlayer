@@ -14,10 +14,10 @@ var publicPath = "/build/";
 
 
 // 路由映射
-// var proxy = {
-//     "/api/*": { target: "http://python-china.org", host: "python-china.org", secure: false, changeOrigin: true },
-//     "/session*": { target: "http://python-china.org", host: "python-china.org", secure: false, changeOrigin: true }
-// };
+var proxy = {
+    "/songs": { target: "http://localhost:80", changeOrigin: true}
+    // "/session*": { target: "http://python-china.org", host: "python-china.org", secure: false, changeOrigin: true }
+};
 
 
 module.exports = {
@@ -89,7 +89,7 @@ module.exports = {
     devServer: {
         historyApiFallback: true,
         host: '0.0.0.0',
-        // proxy: proxy,
+        proxy: proxy,
         port: 8088
     },
 
