@@ -6,7 +6,7 @@
     "lyricist": "方文山",
     "album": "魔杰座",
     "md5": "58ab82503d153c70b03ab8e52055e603",
-    "album_img": "3265549553028224.jpg",
+    "album_img": "721279627833133.jpg",
     "liked": 20
 }, {
     "id": 2,
@@ -76,7 +76,7 @@
     "lyricist": "周杰伦",
     "album": "魔杰座",
     "md5": "d08add8397181cefb1014a7b09ee4a92",
-    "album_img": "3265549553028224.jpg",
+    "album_img": "721279627833133.jpg",
     "liked": 240
 }, {
     "id": 9,
@@ -146,7 +146,7 @@
     "lyricist": "周杰伦",
     "album": "魔杰座",
     "md5": "cbc731a78bcccab4760f3300247659ce",
-    "album_img": "3265549553028224.jpg",
+    "album_img": "721279627833133.jpg",
     "liked": 202
 }, {
     "id": 16,

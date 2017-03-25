@@ -27,7 +27,7 @@ paths:
           type: number
           default: 8
       tags:
-        - Music
+        - Song
       responses:
         '200':
           description: the result of the songs list request
@@ -54,7 +54,7 @@ paths:
           type: number
           default: 8
       tags:
-        - Music
+        - Song
       responses:
         '200':
           description: the result of the songs list request
@@ -85,7 +85,7 @@ paths:
           type: number
           default: 8
       tags:
-        - Music
+        - Song
       responses:
         '200':
           description: the result of the songs list request
@@ -107,7 +107,7 @@ paths:
           type: number
           default: 8
       tags:
-        - Music
+        - Song
       responses:
         '200':
           description: the result of the songs list request
@@ -125,7 +125,7 @@ paths:
       description: 
         获取单首歌曲
       tags:
-        - Music
+        - Song
       parameters:
         - name: id
           required: true
@@ -136,6 +136,27 @@ paths:
           description: the detail content of a song
           schema:
             $ref: '#/definitions/Song'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  '/lyrics/{md5}':
+    get:
+      summary: a lyric
+      description: 
+        获取单首歌词
+      tags:
+        - Lyric
+      parameters:
+        - name: md5
+          required: true
+          in: path
+          type: string
+      responses:
+        '200':
+          description: the lyric of a song
+          schema:
+            $ref: '#/definitions/Lyric'
         default:
           description: Unexpected error
           schema:
@@ -188,6 +209,12 @@ definitions:
       liked:
         type: number
         description: The number of likes.
+  Lyric:
+    type: object
+    properties:
+      lyric:
+        type: string
+        description: The lyric of the song.
   Error:
     type: object
     properties:
