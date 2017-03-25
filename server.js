@@ -88,8 +88,8 @@ router
 //router for lyrics
 router
     .get('/lyrics/:md5', co.wrap(function* (ctx, next) {
-        ctx.body = '暂无歌词';
-    }))
+        ctx.body = JSON.parse(yield fs.readFile(`./database/lyrics/${ctx.params.md5}.js`, 'utf8'));
+    }));
 
 app
     .use(router.routes())
