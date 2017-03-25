@@ -15,7 +15,7 @@ var publicPath = "/build/";
 
 // 路由映射
 var proxy = {
-    "/songs": { target: "http://localhost:80", changeOrigin: true}
+    "/songs/**": { target: "http://localhost:8087/api/v1"}
     // "/session*": { target: "http://python-china.org", host: "python-china.org", secure: false, changeOrigin: true }
 };
 
