@@ -12,7 +12,7 @@ var router = new Router({
 
 app.use(logger());
 
-app.use(staticServe('./src/assets/'));
+app.use(staticServe('./static/'));
 
 router
     .get('/songs/recommend', co.wrap(function *(ctx, next){

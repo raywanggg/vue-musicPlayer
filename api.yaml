@@ -122,7 +122,7 @@ paths:
   '/songs/{id}':
     get:
       summary: a song
-      description: |
+      description: 
         获取单首歌曲
       tags:
         - Music
@@ -167,15 +167,24 @@ definitions:
       name:
         type: string
         description: The name of the song.
-      author:
+      singer:
         type: string
         description: The singer of the song.
+      composer:
+        type: string
+        description: The composer of the song.
+      lyricist:
+        type: string
+        description: The lyricist of the song.
       md5:
         type: string
         description: md5.
-      url:
+      album:
         type: string
-        description: Image URL representing the song.
+        description: The album of the song.
+      album_img:
+        type: string
+        description: The album image of the song.
       liked:
         type: number
         description: The number of likes.
