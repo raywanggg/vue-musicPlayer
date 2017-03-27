@@ -27,16 +27,11 @@ router
         ctx.body = Array.from(result);
     }))
     .get('/songs/rank', co.wrap(function* (ctx, next) {
-        let size = parseInt(ctx.request.query.size) || 8;
-        let page = parseInt(ctx.request.query.page) || 1;
         let songs = JSON.parse(yield fs.readFile(`./database/songs_list.js`, 'utf8')).sort((a, b) => b.liked - a.liked);
-        let rstSongs = songs.slice(page * size - size, page * size);
-        let result = {
-            data: rstSongs,
-            totalNum: songs.length,
-            page: page,
-            size: rstSongs.length
-        };
+        let result = [[], [], []];
+        Array.from({length: 9}).forEach(function(d, index){
+            result[index % 3].push(songs[index]);
+        });
         ctx.body = result;
     }))
     .get('/songs/mine', co.wrap(function* (ctx, next) {
