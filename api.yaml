@@ -59,7 +59,11 @@ paths:
         '200':
           description: the result of the songs list request
           schema:
-            $ref: '#/definitions/SongsRst'
+            type: array
+            items:
+              type: array
+              items:
+                $ref: '#/definitions/Song'
         default:
           description: Unexpected error
           schema:
