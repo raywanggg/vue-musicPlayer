@@ -1,38 +1,16 @@
 <template>
 	<div class="rank-wrapper">
-		<div class="rank-sort rank-pop">
+		<div v-for="(Item, Index) in items" class="rank-sort">
 			<div class="rank-left">
-				<p>时下流行</p>	
-				<img src="../assets/image/sort_1.jpg">
+				<p>{{ title[Index] }}</p>	
+				<img v-bind:src="image[Index]">
 			</div>
 			<div class="rank-right">
-				<!-- <p>时下流行</p> -->
 				<ul>
-					<li v-for="(item, index) in items[0]">{{ index+1 }}.{{ item.name }} - {{ item.singer }}</li>
-				</ul>
-			</div>
-		</div>
-		<div class="rank-sort rank-film">
-			<div class="rank-left">
-				<p>影视金曲</p>
-				<img src="../assets/image/sort_2.jpg">
-			</div>
-			<div class="rank-right">
-				<!-- <p>影视金曲</p> -->
-				<ul>
-					<li v-for="(item, index) in items[1]">{{ index+1 }}.{{ item.name }} - {{ item.singer }}</li>
-				</ul>
-			</div>
-		</div>
-		<div class="rank-sort rank-classic">
-			<div class="rank-left">
-				<p>怀旧经典</p>
-				<img src="../assets/image/sort_3.jpg">
-			</div>
-			<div class="rank-right">
-				<!-- <p>怀旧经典</p> -->
-				<ul>
-					<li v-for="(item, index) in items[2]">{{ index+1 }}.{{ item.name }} - {{ item.singer }}</li>
+					<li v-for="(item, index) in Item">
+						<span class="rank-song">{{ index+1 }}.{{ item.name }}</span>
+						<span class="rank-singer"> - {{ item.singer }}</span>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -43,7 +21,9 @@
 		name: "rank",
 		data: function() {
 			return {
-				items: []
+				items: [],
+				title: ["时下流行", "影视金曲", "怀旧经典"],
+				image: ["src/assets/image/sort_1.jpg", "src/assets/image/sort_2.jpg", "src/assets/image/sort_3.jpg"]
 			}
 		},
 		methods: {
@@ -51,7 +31,6 @@
 				this.$http.get('songs/rank').then(function(data) {
 					//歌曲路径
 					this.items = data.body;
-
 				}, function(data) {
 					console.log(data.msg);
 				});
@@ -98,22 +77,19 @@
 			height: 100%;
 			margin: 5px 5px 5px 170px;
 			overflow: auto;
-			/*p {
-				display: block;
-				text-align: right;
-				font-style: italic;
-				font-size: 18px;
-				color: #999;
-				line-height: 20px;
-			}*/
 			ul {
 				padding-top: 30px;
 				li {
 					cursor: pointer;
 					padding: 5px;
 					font-size: 17px;
-					color: #666;
 					line-height: 35px;
+					.rank-song {
+						color: #333;
+					}
+					.rank-singer {
+						color: #999;
+					}
 				}
 			}
 		}
