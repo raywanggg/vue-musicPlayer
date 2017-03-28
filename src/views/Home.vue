@@ -1,7 +1,13 @@
 <template>
 	<div id="home">
-		<search></search>
-		<content>
+		<div id="search">
+			<div class="search-wrapper">
+				<input id="searchInput" type="text" v-model="keyword" placeholder="输入歌曲名、歌手名或专辑名">
+				<label for="searchInput" v-on:click="search"><router-link to="result">搜索</router-link></label>
+				<img v-show="isSearch" v-on:click="goback" src="../assets/image/back1.png" class="search-back">
+			</div>
+		</div>
+		<content v-show="!isSearch">
 			<ul class="homeTab-wrap">
 				<li v-bind:class="[flag == 0? active: '']" v-on:click="flag = 0"><router-link to="recommend">推荐</router-link></li>
 				<li v-bind:class="[flag == 1? active: '']" v-on:click="flag = 1"><router-link to="rank">排行</router-link></li>
@@ -12,21 +18,66 @@
 	</div>
 </template>
 <script>
-import Search from "./Search.vue";
+// import Search from "./Search.vue";
 export default {
 	data: function() {
 		return {
 			flag: 0,
-			active: "active"//bind中绑定的是data中的数据，data到类的映射
+			active: "active",//bind中绑定的是data中的数据，data到类的映射
+			isSearch: false,
+			keyword: ""
 		}
 	},
-	components: {
-		Search
+	methods: {
+		search: function() {
+			this.isSearch = true;
+			this.$store.commit("set", this.keyword);
+		},
+		goback: function() {
+			this.isSearch = false;
+			this.keyword = "";
+			switch(this.flag) {
+				case 0: this.$router.push("recommend"); break;
+				case 1: this.$router.push("rank"); break;
+				case 2: this.$router.push("person"); break;
+			}
+		}
 	}
 }
 </script>
 <style scoped>
 	@import "../../css/common";
+	#search {
+		width: 100%;
+		height: 70px;
+		background: #ea6f5a;
+		.search-wrapper {
+			input {
+				width: 70%;
+			    height: 38px;
+			    margin: 15px 20px;
+			    border: 1px solid #ddd;
+			    border-radius: 20px;
+			    outline: none;
+			    text-indent: 15px;
+			}
+			label {
+				color: #fff;
+				font-size: 20px;
+				margin-left: 10px;
+				cursor: pointer;
+			}
+			a {
+				color: #fff;
+			}
+			.search-back {
+				width: 22px;
+			    height: 22px;
+			    margin-top: -6px;
+			    margin-left: 6px;
+			}
+		}
+	}
 	ul {
 		margin-top: 0;
 		width: 100%;

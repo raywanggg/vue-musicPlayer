@@ -31,7 +31,7 @@
 		methods: {
 			fetch: function() {
 				this.$http.get('songs/recommend').then(function(data) {
-					// console.log(data);
+					//歌曲路径
 					this.items = data.body;
 					this.items.map(function(value, index){
 						value.cover = "src/assets/image/album/" + value["album_img"];

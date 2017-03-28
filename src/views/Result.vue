@@ -6,27 +6,30 @@
 	</div>
 </template>
 <script>
-	// name: "result",
-	// data: function() {
-	// 	return {
-	// 		value: ""
-	// 	}
-	// }
-	// methods: {
-	// 	//从store获取keyword
-	// 	search: function() {
-	// 		store.commit("get", this.value);
-	// 		this.$http.get('songs/search').then(function(data) {
-	// 			console.log(data);
+export default {
+	name: "result",
+	data: function() {
+		return {
+			value: ""
+		}
+	},
+	methods: {
+		//从store获取keyword
+		getResult: function() {
+			this.$store.commit("get", this.value);
+			console.log(this.value);
+			this.$http.get('songs/search', {key: this.value}).then(function(data) {
+				// console.log(data);
 				
-	// 		}, function(data) {
-	// 			console.log(data.msg);
-	// 		});
-	// 	}
-	// },
-	// created: {
-	// 	this.search();
-	// }
+			}, function(data) {
+				// console.log(data.msg);
+			});
+		}
+	},
+	created: function() {
+		this.getResult();
+	}
+}
 </script>
 <style>
 	@import "../../css/common";
