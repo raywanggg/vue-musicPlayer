@@ -2,6 +2,7 @@ import Home from './views/Home.vue';
 import Recommend from './views/Recommend.vue';
 import Rank from './views/Rank.vue';
 import Person from './views/Person.vue';
+import Result from './views/Result.vue';
 export default [{
         path: '/home',
         components: {
@@ -21,6 +22,11 @@ export default [{
             path: 'person',
             components: {
                 viewall: Person
+            }
+        }, {
+            path: 'result',
+            components: {
+                viewall: Result
             }
         }]
     }

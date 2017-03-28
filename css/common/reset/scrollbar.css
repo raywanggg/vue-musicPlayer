@@ -1,5 +1,5 @@
 ::-webkit-scrollbar {
-  width: 8px; 
+  width: 6px; 
   background-color: rgba(0, 0, 0, 0);
   -webkit-border-radius: 100px;
 }
@@ -8,12 +8,16 @@
 }
  
 ::-webkit-scrollbar-thumb:vertical {
-  border: 1px solid #4C4A48;
-  background: rgba(0, 0, 0, 0.5);
+  /*border: 1px solid #4C4A48;*/
+  /*background: rgba(0, 0, 0, 0.5);*/
+  border: 1px solid #bbb;
+  background: #bcbcbc;
   -webkit-border-radius: 100px;
 }
 ::-webkit-scrollbar-thumb:vertical:active {
-  border: 1px solid #4C4A48;
-  background: rgba(0, 0, 0, 0.61);
+  /*border: 1px solid #4C4A48;*/
+  /*background: rgba(0, 0, 0, 0.61);*/
+  border: 1px solid #bbb;
+  background: #cdcdcd;
   -webkit-border-radius: 100px;
 }

@@ -11,7 +11,6 @@
 					</div>
 				</div>
 				<div v-else class="home-back" key="show2">
-					<!-- <h1 style="text-align: center;">this is search page!</h1> -->
 					<router-view name="home"></router-view>
 				</div>
 			</transition>
@@ -36,6 +35,9 @@ export default {
 </script>
 <style>
 	@import "../css/common";
+	#home {
+		height: calc(100% - 110px);
+	}
 	.turn-page-leave-active {
 	  	transform: rotateY(90deg);
 	}

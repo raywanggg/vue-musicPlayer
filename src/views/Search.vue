@@ -2,7 +2,7 @@
 	<div id="search">
 		<div class="search-wrapper">
 			<input id="searchInput" type="text" v-model="value" placeholder="输入歌曲名、歌手名或专辑名">
-			<label for="searchInput">搜索</label>
+			<label for="searchInput" v-on:click="search"><router-link to="result">搜索</router-link></label>
 		</div>
 	</div>
 </template>
@@ -12,6 +12,15 @@ export default {
 	data: function() {
 		return {
 			value: ""
+		}
+	},
+	methods: {
+		//隐藏tab框框
+		//回车或者点击搜索
+		search: function() {
+			console.log(this);
+			console.log(this.$store);
+			this.$store.commit("set", this.value);
 		}
 	}
 }
@@ -37,6 +46,9 @@ export default {
 				font-size: 20px;
 				margin-left: 10px;
 				cursor: pointer;
+			}
+			a {
+				color: #fff;
 			}
 		}
 	}

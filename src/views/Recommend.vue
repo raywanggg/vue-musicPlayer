@@ -1,11 +1,15 @@
 <template>
 	<div class="reco-wrapper">
-		<ul>
+		<div class="reco-head">
+			<p class="reco-title">歌单推荐</p>	
+			<p class="reco-change">换一换<img src="../assets/image/reco-change.png" v-on:click="fetch"></p>
+		</div>
+		<ul class="reco-body">
 			<li v-for="item in items">
 				<div class="reco-up">
 					<img v-bind:src="item.cover" class="reco-cover">
 					<div class="reco-wrap"></div>
-					<span class="reco-liked"><img src="../assets/image/liked-2.png">{{ item.liked }}</span>
+					<span class="reco-liked"><img src="../assets/image/liked-3.png">{{ item.liked }}</span>
 					<span class="reco-album">《{{ item.album }}》</span>
 				</div>
 				<p class="reco-down">
@@ -27,7 +31,7 @@
 		methods: {
 			fetch: function() {
 				this.$http.get('songs/recommend').then(function(data) {
-					console.log(data);
+					// console.log(data);
 					this.items = data.body;
 					this.items.map(function(value, index){
 						value.cover = "src/assets/image/album/" + value["album_img"];
@@ -45,19 +49,49 @@
 </script>
 <style scoped>
 	@import "../../css/common";
-	/*.reco-wrapper {
+	.reco-wrapper {
 		width: 100%;
-		height: ;
+		height: 100%;
 		overflow-y: auto;
-	}*/
-	ul {
+	}
+	.reco-head {
+		position: relative;
+		width: 90%;
+		height: 30px;
+		margin: 5px auto;
+		box-sizing: border-box;
+		border-left: 5px solid #ea6f5a;
+		/*border-bottom: 1px solid #ddd;
+		box-shadow: 5px 5px 5px #ccc;*/
+		p {
+			position: absolute;
+			line-height: 30px;
+			height: 30px;
+			top: 0;
+			font-size: 15px;
+			color: #666;
+			cursor: default;
+		}
+		.reco-title {
+			left: 8px;
+		}
+		.reco-change {
+			right: 2px;
+			img {
+				cursor: pointer;
+				margin-left: 3px;
+				margin-top: -2px;
+			}
+		}
+	}
+	.reco-body {
 		margin: 10px;
 		list-style: none;
 		li {
 			display: inline-block;
 			box-sizing: border-box;
-			width: calc(50% - 30px);
-			margin: 0 12px 10px;
+			width: calc(50% - 36px);
+			margin: 0 16px 10px;
 			border: 1px solid #dedede;
 			box-shadow: 0 0 5px #ddd;
 			cursor: pointer;
@@ -91,7 +125,7 @@
 					}
 				}
 				.reco-album {
-					right: 0;
+					right: -3px;
 				}
 			}
 			.reco-down {

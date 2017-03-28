@@ -2,7 +2,7 @@
 	<div id="home">
 		<search></search>
 		<content>
-			<ul>
+			<ul class="homeTab-wrap">
 				<li v-bind:class="[flag == 0? active: '']" v-on:click="flag = 0"><router-link to="recommend">推荐</router-link></li>
 				<li v-bind:class="[flag == 1? active: '']" v-on:click="flag = 1"><router-link to="rank">排行</router-link></li>
 				<li v-bind:class="[flag == 2? active: '']" v-on:click="flag = 2"><router-link to="person">我的</router-link></li>
