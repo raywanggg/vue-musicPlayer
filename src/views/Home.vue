@@ -3,7 +3,8 @@
 		<div id="search">
 			<div class="search-wrapper">
 				<input id="searchInput" type="text" v-model="keyword" placeholder="输入歌曲名、歌手名或专辑名">
-				<label for="searchInput" v-on:click="search"><router-link to="result">搜索</router-link></label>
+				<!-- 写在内侧的click会优先a跳转执行 -->
+				<router-link to="result"><label for="searchInput" v-on:click="search">搜索</label></router-link>
 				<img v-show="isSearch" v-on:click="goback" src="../assets/image/back1.png" class="search-back">
 			</div>
 		</div>
@@ -30,8 +31,12 @@ export default {
 	},
 	methods: {
 		search: function() {
+			// if (this.isSearch == true) {
+			// 	location.reload();
+			// }
 			this.isSearch = true;
 			this.$store.commit("set", this.keyword);
+			console.log(this.$store.state.keyword);
 		},
 		goback: function() {
 			this.isSearch = false;
