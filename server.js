@@ -59,7 +59,7 @@ router
         let size = parseInt(ctx.request.query.size) || 8;
         let page = parseInt(ctx.request.query.page) || 1;
         let songs = JSON.parse(yield fs.readFile(`./database/songs_list.js`, 'utf8'));
-        songs = songs.filter(song => keyReg.test('' + song.name + song.author));
+        songs = songs.filter(song => keyReg.test(song.name + ' ' +  song.singer + ' ' + song.album));
         let rstSongs = songs.slice(page * size - size, page * size);
         let result = {
             data: rstSongs,
