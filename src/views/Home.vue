@@ -20,15 +20,21 @@
 </template>
 <script>
 // import Search from "./Search.vue";
+import { mapState } from 'vuex';
 export default {
 	data: function() {
 		return {
 			flag: 0,
 			active: "active",//bind中绑定的是data中的数据，data到类的映射
 			isSearch: false,
-			keyword: ""
+			// keyword: ""
 		}
 	},
+
+	computed: mapState({
+		keyword: state => state.keyword
+	}),
+
 	methods: {
 		search: function() {
 			// if (this.isSearch == true) {
@@ -36,6 +42,7 @@ export default {
 			// }
 			this.isSearch = true;
 			this.$store.commit("set", this.keyword);
+			this.$store.commit("update", this.keyword);
 			console.log(this.$store.state.keyword);
 		},
 		goback: function() {
