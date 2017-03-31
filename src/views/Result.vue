@@ -40,10 +40,26 @@ export default {
 			isEmpty: false
 		}
 	},
-	computed: mapState({
-		value: state => state.keyword,
-		words: state => state.history
-	}),
+	// computed: mapState({
+	// 	value: state => state.keyword,
+	// 	words: state => state.history
+	// }),
+	computed: {
+		value: {
+			get() {
+				return this.$store.state.keyword;
+			},
+			set(value) {
+				this.$store.commit("set", this.keyword);
+			}
+		},
+		...mapState({
+			words: state => state.history
+		})
+		// mapState: function() {
+		// 	words: state => state.history
+		// }
+	},
 	methods: {
 		getResult: function() {
 			//渲染列表
@@ -63,6 +79,7 @@ export default {
 		},
 		reSearch: function(list) {
 			this.value = list;
+			console.log(this.value);
 			this.getResult();
 		}
 	},

@@ -31,9 +31,20 @@ export default {
 		}
 	},
 
-	computed: mapState({
-		keyword: state => state.keyword
-	}),
+	computed: {
+		keyword: {
+			get() {
+				return this.$store.state.keyword;
+			},
+			set(value) {
+				this.$store.commit("set", this.keyword);
+			}
+		}
+	},
+
+	// computed: mapState({
+	// 	keyword: state => state.keyword
+	// }),
 
 	methods: {
 		search: function() {
@@ -41,7 +52,7 @@ export default {
 			// 	location.reload();
 			// }
 			this.isSearch = true;
-			this.$store.commit("set", this.keyword);
+			// this.$store.commit("set", this.keyword);
 			this.$store.commit("update", this.keyword);
 			console.log(this.$store.state.keyword);
 		},
