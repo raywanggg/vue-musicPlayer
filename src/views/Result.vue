@@ -21,7 +21,7 @@
 						</p>
 					</div>
 					<div class="result-right">
-						<img class="result-add" src="../assets/image/add2.png">
+						<img class="result-add" src="../assets/image/add2.png" v-on:click="collect(item)">
 						<img class="result-enter" src="../assets/image/enter.png">
 					</div>
 				</li>
@@ -50,21 +50,18 @@ export default {
 				return this.$store.state.keyword;
 			},
 			set(value) {
-				this.$store.commit("set", this.keyword);
+				this.$store.commit("set", value);
 			}
 		},
+		//es6语法
 		...mapState({
 			words: state => state.history
 		})
-		// mapState: function() {
-		// 	words: state => state.history
-		// }
 	},
 	methods: {
 		getResult: function() {
 			//渲染列表
 			this.$http.get('songs/search?key=' + this.value).then(function(data) {
-				console.log(data.body.data.length);
 				if (data.body.data.length != 0) {
 					this.items = data.body.data;
 					this.isEmpty = false;
@@ -79,9 +76,9 @@ export default {
 		},
 		reSearch: function(list) {
 			this.value = list;
-			console.log(this.value);
 			this.getResult();
-		}
+		},
+		collect: function(item) {}
 	},
 	watch: {
 		value: function(val) {
@@ -162,7 +159,7 @@ export default {
 		li {
 			display: block;
 			position: relative;
-			margin: 10px;
+			margin: 5px 10px;
 			box-sizing: border-box; 
 			border-bottom: 1px solid #ededed;
 			padding: 5px;
@@ -191,6 +188,9 @@ export default {
 				img {
 					width: 24px;
 					height: 24px;
+				}
+				.result-add {
+					margin-right: 10px;
 				}
 			}
 		}

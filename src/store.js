@@ -4,7 +4,8 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   	state: {
     	keyword: "",
-    	history: []
+    	history: [],
+    	collection: []
   	},
   	mutations: {
     	set (state, search) {

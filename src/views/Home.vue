@@ -26,8 +26,7 @@ export default {
 		return {
 			flag: 0,
 			active: "active",//bind中绑定的是data中的数据，data到类的映射
-			isSearch: false,
-			// keyword: ""
+			isSearch: false
 		}
 	},
 
@@ -36,12 +35,13 @@ export default {
 			get() {
 				return this.$store.state.keyword;
 			},
-			set(value) {
-				this.$store.commit("set", this.keyword);
+			set(keyword) {
+				this.$store.commit("set", keyword);
 			}
 		}
 	},
 
+	// mapState只能写入，get/set可以双向绑定
 	// computed: mapState({
 	// 	keyword: state => state.keyword
 	// }),
@@ -51,8 +51,8 @@ export default {
 			// if (this.isSearch == true) {
 			// 	location.reload();
 			// }
-			this.isSearch = true;
 			// this.$store.commit("set", this.keyword);
+			this.isSearch = true;
 			this.$store.commit("update", this.keyword);
 			console.log(this.$store.state.keyword);
 		},
