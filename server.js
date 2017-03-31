@@ -3,6 +3,7 @@ var fs = require('co-fs');
 var logger = require('koa-logger');
 var Router = require('koa-router');
 var staticServe = require('koa-static');
+var cors = require('kcors');
 var Koa = require('koa');
 
 var app = new Koa();
@@ -11,7 +12,7 @@ var router = new Router({
 });
 
 app.use(logger());
-
+app.use(cors());
 app.use(staticServe('./static/'));
 
 //router for songs
@@ -38,7 +39,8 @@ router
         let size = parseInt(ctx.request.query.size) || 8;
         let page = parseInt(ctx.request.query.page) || 1;
         let songs = JSON.parse(yield fs.readFile(`./database/songs_list.js`, 'utf8'));
-        let rstSongs = songs.slice(page * size - size, page * size);
+        let collectedIds = JSON.parse(yield fs.readFile(`./database/my_collected.js`, 'utf8'));
+        let rstSongs = songs.filter(song => collectedIds.includes(song.id)).slice(page * size - size, page * size);
         let result = {
             data: rstSongs,
             totalNum: songs.length,
@@ -78,6 +80,24 @@ router
             return;
         }
         ctx.body = result;
+    }))
+    .put('/songs/collection/:id', co.wrap(function* (ctx, next) {
+        let songsList = JSON.parse(yield fs.readFile(`./database/songs_list.js`, 'utf8'));
+        let result = songsList.some((song) => ctx.params.id == song.id);
+        if (!result) {
+            ctx.status = 404;
+            ctx.body = '歌曲不存在！';
+            return;
+        }
+        let collectedIds = JSON.parse(yield fs.readFile(`./database/my_collected.js`, 'utf8'));
+        let index = Array.prototype.indexOf.call(collectedIds, +ctx.params.id);
+        if(index > -1){
+            collectedIds.splice(index, 1);
+        } else {
+            collectedIds.push(+ctx.params.id);
+        }
+        ctx.status = 200;
+        fs.writeFile(`./database/my_collected.js`, JSON.stringify(collectedIds), {'encoding': 'utf8'});
     }));
 
 //router for lyrics
