@@ -2,20 +2,22 @@
 	<div class="reco-wrapper">
 		<div class="reco-head">
 			<p class="reco-title">歌单推荐</p>	
-			<p class="reco-change">换一换<img src="../assets/image/reco-change.png" v-on:click="fetch"></p>
+			<p class="reco-change">换一换<img src="../assets/image/reco-change.png" v-on:click="fetchSong"></p>
 		</div>
 		<ul class="reco-body">
 			<li v-for="item in items">
-				<div class="reco-up">
-					<img v-bind:src="item.cover" class="reco-cover">
-					<div class="reco-wrap"></div>
-					<span class="reco-liked"><img src="../assets/image/liked-3.png">{{ item.liked }}</span>
-					<span class="reco-album">《{{ item.album }}》</span>
-				</div>
-				<p class="reco-down">
-					<span class="reco-name">{{ item.name }}</span>
-					<span class="reco-singer">{{ item.singer }}</span>
-				</p>
+				<router-link v-bind:to="item.href">
+					<div class="reco-up">
+						<img v-bind:src="item.cover" class="reco-cover">
+						<div class="reco-wrap"></div>
+						<span class="reco-liked"><img src="../assets/image/liked-3.png">{{ item.liked }}</span>
+						<span class="reco-album">《{{ item.album }}》</span>
+					</div>
+					<p class="reco-down">
+						<span class="reco-name">{{ item.name }}</span>
+						<span class="reco-singer">{{ item.singer }}</span>
+					</p>
+				</router-link>
 			</li>
 		</ul>	
 	</div>
@@ -29,12 +31,13 @@
 			}
 		},
 		methods: {
-			fetch: function() {
+			fetchSong: function() {
 				this.$http.get('songs/recommend').then(function(data) {
 					//歌曲路径
 					this.items = data.body;
 					this.items.map(function(value, index){
 						value.cover = "src/assets/image/album/" + value["album_img"];
+						value.href = "/song/" + value["id"];
 						return value;
 					});
 				}, function(data) {
@@ -43,7 +46,7 @@
 			}
 		},
 		created: function() {
-			this.fetch();
+			this.fetchSong();
 		}
 	}
 </script>

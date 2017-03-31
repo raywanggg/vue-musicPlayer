@@ -13,17 +13,19 @@
 		<div v-show="!isEmpty" class="result-wrap">
 			<ul class="result-lists">
 				<li v-for="item in items">
-					<div class="result-left">
-						<p class="result-name">{{ item.name }}</p>
-						<p class="result-info">
-							<span class="result-singer">{{ item.singer }}</span>
-							<span class="result-album"> -《{{ item.album }}》</span>
-						</p>
-					</div>
-					<div class="result-right">
-						<img class="result-add" src="../assets/image/add2.png" v-on:click="collect(item)">
-						<img class="result-enter" src="../assets/image/enter.png">
-					</div>
+					<router-link v-bind:to="item.href">
+						<div class="result-left">
+							<p class="result-name">{{ item.name }}</p>
+							<p class="result-info">
+								<span class="result-singer">{{ item.singer }}</span>
+								<span class="result-album"> -《{{ item.album }}》</span>
+							</p>
+						</div>
+						<div class="result-right">
+							<img class="result-add" src="../assets/image/add2.png" v-on:click="collect(item)">
+							<img class="result-enter" src="../assets/image/enter.png">
+						</div>
+					</router-link>
 				</li>
 			</ul>
 		</div>
@@ -62,8 +64,13 @@ export default {
 		getResult: function() {
 			//渲染列表
 			this.$http.get('songs/search?key=' + this.value).then(function(data) {
+				console.log(data.body.data);
 				if (data.body.data.length != 0) {
 					this.items = data.body.data;
+					this.items.map(function(value, index){
+						value.href = "/song/" + value["id"];
+						return value;
+					});
 					this.isEmpty = false;
 				} else {
 					this.isEmpty = true;
@@ -191,6 +198,7 @@ export default {
 				}
 				.result-add {
 					margin-right: 10px;
+					cursor: pointer;
 				}
 			}
 		}

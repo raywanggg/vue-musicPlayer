@@ -11,7 +11,7 @@
 					</div>
 				</div>
 				<div v-else class="home-back" key="show2">
-					<router-view name="home"></router-view>
+					<router-view name="app"></router-view>
 				</div>
 			</transition>
 		</div>

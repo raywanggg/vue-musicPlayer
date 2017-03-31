@@ -4,8 +4,8 @@
 			<div class="search-wrapper">
 				<input id="searchInput" type="text" v-model="keyword" placeholder="输入歌曲名、歌手名或专辑名">
 				<!-- 写在内侧的click会优先a跳转执行 -->
-				<router-link to="result"><label for="searchInput" v-on:click="search">搜索</label></router-link>
-				<img v-show="isSearch" v-on:click="goback" src="../assets/image/back1.png" class="search-back">
+				<router-link to="result"><label for="searchInput" v-on:click="searchSong">搜索</label></router-link>
+				<img v-show="isSearch" v-on:click="backHome" src="../assets/image/back1.png" class="search-back">
 			</div>
 		</div>
 		<content v-show="!isSearch">
@@ -47,7 +47,7 @@ export default {
 	// }),
 
 	methods: {
-		search: function() {
+		searchSong: function() {
 			// if (this.isSearch == true) {
 			// 	location.reload();
 			// }
@@ -56,7 +56,7 @@ export default {
 			this.$store.commit("update", this.keyword);
 			console.log(this.$store.state.keyword);
 		},
-		goback: function() {
+		backHome: function() {
 			this.isSearch = false;
 			this.keyword = "";
 			switch(this.flag) {

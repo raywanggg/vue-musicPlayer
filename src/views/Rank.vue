@@ -8,8 +8,10 @@
 			<div class="rank-right">
 				<ul>
 					<li v-for="(item, index) in Item">
-						<span class="rank-song">{{ index+1 }}.{{ item.name }}</span>
-						<span class="rank-singer"> - {{ item.singer }}</span>
+						<router-link v-bind:to="item.href">
+							<span class="rank-song">{{ index+1 }}.{{ item.name }}</span>
+							<span class="rank-singer"> - {{ item.singer }}</span>
+						</router-link>
 					</li>
 				</ul>
 			</div>
@@ -27,17 +29,23 @@
 			}
 		},
 		methods: {
-			fetch: function() {
+			fetchSong: function() {
 				this.$http.get('songs/rank').then(function(data) {
 					//歌曲路径
 					this.items = data.body;
+					this.items.map(function(value, index){
+						value.map(function(val, index){
+							val.href = "/song/" + val["id"];
+							return val;
+						});
+					});
 				}, function(data) {
 					console.log(data.msg);
 				});
 			}
 		},
 		created: function() {
-			this.fetch();
+			this.fetchSong();
 		}
 	}
 </script>
