@@ -3,7 +3,7 @@ info:
   title: music-player API
   description: music-player API
   version: 1.0.0
-host: localhost
+host: localhost:8087
 schemes:
   - http
 basePath: /api/v1
@@ -140,6 +140,25 @@ paths:
           description: the detail content of a song
           schema:
             $ref: '#/definitions/Song'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  '/songs/collection/{id}':
+    put:
+      summary: to give or to cancel a collection for  the song
+      description: 
+        收藏/取消收藏单首歌曲
+      tags:
+        - Song
+      parameters:
+        - name: id
+          required: true
+          in: path
+          type: number
+      responses:
+        '200':
+          description: success
         default:
           description: Unexpected error
           schema:
