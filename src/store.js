@@ -5,7 +5,8 @@ const store = new Vuex.Store({
   	state: {
     	keyword: "",
     	history: [],
-    	collection: []
+    	collection: [],//存储收藏曲目
+    	playlist: []//存储点击播放单曲后的播放歌单
   	},
   	mutations: {
     	set (state, search) {
