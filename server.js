@@ -63,6 +63,14 @@ router
         let songs = JSON.parse(yield fs.readFile(`./database/songs_list.js`, 'utf8'));
         songs = songs.filter(song => keyReg.test(song.name + ' ' +  song.singer + ' ' + song.album));
         let rstSongs = songs.slice(page * size - size, page * size);
+        let collectedIds = JSON.parse(yield fs.readFile(`./database/my_collected.js`, 'utf8'));
+        rstSongs.forEach((song) => {
+            if(collectedIds.includes(+song.id)){
+                song.isCollected = true;
+            } else {
+                song.isCollected = false;
+            }
+        });
         let result = {
             data: rstSongs,
             totalNum: songs.length,
