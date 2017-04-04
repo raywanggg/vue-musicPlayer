@@ -232,6 +232,9 @@ definitions:
       liked:
         type: number
         description: The number of likes.
+      isCollected:
+        type: boolean
+        description: isCollected field.
   Lyric:
     type: object
     properties:
