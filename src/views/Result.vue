@@ -22,7 +22,7 @@
 							</p>
 						</div>
 						<div class="result-right">
-							<img class="result-add" src="../assets/image/add2.png" v-on:click="collect(item)">
+							<img class="result-collect" v-bind:src="[item.isCollected == true ? remove : add]" v-on:click="collect(item.id, item.isCollected)">
 							<img class="result-enter" src="../assets/image/enter.png">
 						</div>
 					</router-link>
@@ -39,7 +39,9 @@ export default {
 		return {
 			lists: [],
 			items: [],
-			isEmpty: false
+			isEmpty: false,
+			add: "src/assets/image/add2.png",
+			remove: "src/assets/image/add3.png"
 		}
 	},
 	// computed: mapState({
@@ -52,7 +54,7 @@ export default {
 				return this.$store.state.keyword;
 			},
 			set(value) {
-				this.$store.commit("set", value);
+				this.$store.commit("keywordSet", value);
 			}
 		},
 		//es6语法
@@ -64,7 +66,7 @@ export default {
 		getResult: function() {
 			//渲染列表
 			this.$http.get('songs/search?key=' + this.value).then(function(data) {
-				console.log(data.body.data);
+				// console.log(data.body.data);
 				if (data.body.data.length != 0) {
 					this.items = data.body.data;
 					this.items.map(function(value, index){
@@ -85,7 +87,18 @@ export default {
 			this.value = list;
 			this.getResult();
 		},
-		collect: function(item) {}
+		collect: function(id, isCollected) {
+			var event = event || window.event;
+            // event.stopPropagation();//阻止冒泡
+            event.preventDefault();//阻止默认行为
+			this.$http.put('songs/collection/' + id).then(function(data) {
+				this.getResult();
+				// isCollected = !isCollected;//不能及时刷新 
+			}, function(data) {
+				console.log(data.msg);
+			});
+			
+		}
 	},
 	watch: {
 		value: function(val) {
@@ -196,7 +209,7 @@ export default {
 					width: 24px;
 					height: 24px;
 				}
-				.result-add {
+				.result-collect {
 					margin-right: 10px;
 					cursor: pointer;
 				}

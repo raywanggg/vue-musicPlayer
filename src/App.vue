@@ -53,7 +53,7 @@ export default {
 		display: block;
 		overflow: hidden;
 		box-sizing: border-box;
-		margin: 5px auto auto;
+		margin: 0 auto;
 		border: 1px solid #ccc;
 		border-radius: 5px;
 		.home-wrapper {
