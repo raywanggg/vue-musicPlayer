@@ -87,6 +87,8 @@ router
             ctx.body = '歌曲不存在！';
             return;
         }
+        let collectedIds = JSON.parse(yield fs.readFile(`./database/my_collected.js`, 'utf8'));
+        result.isCollected = collectedIds.includes(result.id);
         ctx.body = result;
     }))
     .put('/songs/collection/:id', co.wrap(function* (ctx, next) {
