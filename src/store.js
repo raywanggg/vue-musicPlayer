@@ -3,14 +3,14 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 const store = new Vuex.Store({
   	state: {
-    	keyword: "",
-    	history: [],
+    	keyword: "",//搜索关键词
+    	history: [],//搜索历史记录
     	collection: [],//存储收藏曲目
     	playlist: [],//存储点击播放单曲后的播放歌单
     	progressBar: 0,//进度条长度
     	lineMark: 0,//播放行数
-    	timeAll: "00:00",
-		timeCurrent: "00:00"
+    	timeAll: "00:00",//播放总时长
+		timeCurrent: "00:00"//播放当前时长
   	},
   	mutations: {
     	keywordSet (state, search) {
@@ -27,6 +27,9 @@ const store = new Vuex.Store({
 		},
 		lineSet (state, line) {
 			state.lineMark = line;  
+		},
+		listSet (state, list) {
+			state.playlist = list;
 		},
 		update (state, search) {
 			if (state.history.length == 6) {

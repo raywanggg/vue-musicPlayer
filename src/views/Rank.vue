@@ -19,35 +19,51 @@
 	</div>
 </template>
 <script>
-	export default {
-		name: "rank",
-		data: function() {
-			return {
-				items: [],
-				title: ["时下流行", "影视金曲", "怀旧经典"],
-				image: ["src/assets/image/sort_1.jpg", "src/assets/image/sort_2.jpg", "src/assets/image/sort_3.jpg"]
-			}
-		},
-		methods: {
-			fetchSong: function() {
-				this.$http.get('songs/rank').then(function(data) {
-					//歌曲路径
-					this.items = data.body;
-					this.items.map(function(value, index){
-						value.map(function(val, index){
-							val.href = "/song/" + val["id"];
-							return val;
-						});
-					});
-				}, function(data) {
-					console.log(data.msg);
-				});
-			}
-		},
-		created: function() {
-			this.fetchSong();
+import { mapState } from 'vuex';
+export default {
+	name: "rank",
+	data: function() {
+		return {
+			items: [],
+			title: ["时下流行", "影视金曲", "怀旧经典"],
+			image: ["src/assets/image/sort_1.jpg", "src/assets/image/sort_2.jpg", "src/assets/image/sort_3.jpg"]
 		}
+	},
+	computed: {
+		playlist: {
+			get() {
+				return this.$store.state.playlist;
+			},
+			set(playlist) {
+				this.$store.commit("listSet", playlist);
+			}
+		}
+	},
+	methods: {
+		fetchSong: function() {
+			this.$http.get('songs/rank').then(function(data) {
+				var i = 0;
+				var self = this;
+				this.playlist = [];
+				//歌曲路径
+				this.items = data.body;
+				this.items.map(function(value, index){
+					value.map(function(val, ind){
+						self.playlist[i] = val["id"];
+						i ++;
+						val.href = "/song/" + val["id"];
+						return val;
+					});
+				});
+			}, function(data) {
+				console.log(data.msg);
+			});
+		}
+	},
+	created: function() {
+		this.fetchSong();
 	}
+}
 </script>
 <style scoped>
 	@import "../../css/common";

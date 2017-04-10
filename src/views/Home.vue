@@ -59,7 +59,7 @@ export default {
 		backHome: function() {
 			this.isSearch = false;
 			this.keyword = "";
-			switch(this.flag) {
+			switch(this.flag) {//路由改变不用监听
 				case 0: this.$router.push("recommend"); break;
 				case 1: this.$router.push("rank"); break;
 				case 2: this.$router.push("person"); break;

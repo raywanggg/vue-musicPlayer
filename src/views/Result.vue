@@ -57,6 +57,14 @@ export default {
 				this.$store.commit("keywordSet", value);
 			}
 		},
+		playlist: {
+			get() {
+				return this.$store.state.playlist;
+			},
+			set(playlist) {
+				this.$store.commit("listSet", playlist);
+			}
+		},
 		//es6语法
 		...mapState({
 			words: state => state.history
@@ -67,9 +75,12 @@ export default {
 			//渲染列表
 			this.$http.get('songs/search?key=' + this.value).then(function(data) {
 				// console.log(data.body.data);
+				var self = this;
 				if (data.body.data.length != 0) {
 					this.items = data.body.data;
+					this.playlist = [];
 					this.items.map(function(value, index){
+						self.playlist[index] = value["id"];
 						value.href = "/song/" + value["id"];
 						return value;
 					});

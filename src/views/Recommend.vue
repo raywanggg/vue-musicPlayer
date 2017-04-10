@@ -23,32 +23,46 @@
 	</div>
 </template>
 <script>
-	export default {
-		name: "recommend",
-		data: function() {
-			return {
-				items: []
-			}
-		},
-		methods: {
-			fetchSong: function() {
-				this.$http.get('songs/recommend').then(function(data) {
-					//歌曲路径
-					this.items = data.body;
-					this.items.map(function(value, index){
-						value.cover = "src/assets/image/album/" + value["album_img"];
-						value.href = "/song/" + value["id"];
-						return value;
-					});
-				}, function(data) {
-					console.log(data.msg);
-				});
-			}
-		},
-		created: function() {
-			this.fetchSong();
+import { mapState } from 'vuex';
+export default {
+	name: "recommend",
+	data: function() {
+		return {
+			items: []
 		}
+	},
+	computed: {
+		playlist: {
+			get() {
+				return this.$store.state.playlist;
+			},
+			set(playlist) {
+				this.$store.commit("listSet", playlist);
+			}
+		}
+	},
+	methods: {
+		fetchSong: function() {
+			this.$http.get('songs/recommend').then(function(data) {
+				//歌曲路径
+				var self = this;
+				this.items = data.body;
+				this.playlist = [];
+				this.items.map(function(value, index){
+					self.playlist[index] = value["id"];
+					value.cover = "src/assets/image/album/" + value["album_img"];
+					value.href = "/song/" + value["id"];
+					return value;
+				});
+			}, function(data) {
+				console.log(data.msg);
+			});
+		}
+	},
+	created: function() {
+		this.fetchSong();
 	}
+}
 </script>
 <style scoped>
 	@import "../../css/common";

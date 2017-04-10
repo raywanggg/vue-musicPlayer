@@ -3,9 +3,12 @@
 		<div id="song-back"></div>
 		<div class="song-wrap">
 			<div class="song-cover">
+				<div class="song-head">
+					<img src="../assets/image/backhome.png" class="song-return">
+				</div>
 				<div id="fc-wrapper" v-bind:class="[isCoverOpen? fcOpen: '', fcWrapper]">
 					<!-- right-most handle piece -->
-					<div class="fc-handle fc-handle-pull" v-on:click="toggleCover()"></div>
+					<div class="fc-handle fc-handle-pull"></div>
 					<div class="fc-perspective">
 						<!-- right part overlay; get's darker -->
 						<div class="fc-overlay fc-overlay-reverse"></div>
@@ -65,7 +68,7 @@
 				</div>
 			</div>
 			<div class="song-control">
-				<audio id="audio" v-bind:src="songSrc" loop="loop" autoplay="autoplay" @timeupdate = "getSongOffset()"></audio>
+				<audio id="audio" v-bind:src="songSrc" autoplay="autoplay" @timeupdate = "getSongOffset()"></audio>
 				<div class="control-progress">
 					<div class="progressBar">
 						<div class="progressBac" id="progressBac"></div>
@@ -79,9 +82,23 @@
 					</div>
 				</div>
 				<div class="control-button">
+					<div class="button-mode">
+						<img v-show="playMode == 0" src="../assets/image/mode-queue.png" v-on:click="modeControl()">
+						<img v-show="playMode == 1" src="../assets/image/mode-random.png" v-on:click="modeControl()">
+						<img v-show="playMode == 2" src="../assets/image/mode-single.png" v-on:click="modeControl()">
+					</div>
+					<div class="button-before">
+						<img src="../assets/image/song-before.png" v-on:click="listControl(2)">
+					</div>
 					<div class="button-play">
 						<img v-show="!isCoverOpen" src="../assets/image/song-play.png" v-on:click="playControl()">
 						<img v-show="isCoverOpen" src="../assets/image/song-stop.png" v-on:click="playControl()">
+					</div>
+					<div class="button-next">
+						<img src="../assets/image/song-next.png" v-on:click="listControl(1)">
+					</div>
+					<div class="button-list">
+						<img src="../assets/image/song-list.png">
 					</div>
 				</div>
 			</div>
@@ -97,12 +114,15 @@ export default {
 			fcOpen: "fc-wrapper-open",
 			lyricLine: "lyric-line",
 			lyricHigh: "lyric-high",
+			playMode: 0,
 			isCoverOpen: true,
 			songInfo: "",
 			songSrc: "",
 			lyricArray: [],
 			allTime: 0,
-			currentTime: 0
+			currentTime: 0,
+			songId: "",
+			preList: []
 		}
 	},
 	computed: {
@@ -137,13 +157,20 @@ export default {
 			set(timeCurrent) {
 				this.$store.commit("timeSetCurrent", timeCurrent);
 			}
+		},
+		playlist: {
+			get() {
+				return this.$store.state.playlist;
+			}
+		}
+	},
+	watch: {
+		$route() {//路由没变监听id
+			this.getSongInfo();
+			this.playListener();
 		}
 	},
 	methods: {
-		//封面切换
-		toggleCover: function() {
-			// this.isCoverOpen = !this.isCoverOpen;
-		},
 		//时间转换
 		toggleTime: function(time) {
 			var minute = time/60;
@@ -158,6 +185,58 @@ export default {
 		    }
 		    var timeNew = "" + minutes + "" + ":" + "" + seconds + "";
 		    return timeNew;
+		},
+		//模式控制
+		modeControl: function() {
+			this.playMode = (this.playMode + 1) % 3;
+			if (this.playMode == 0) {//列表播放
+				this.preList = this.playlist.slice(0);
+			} else if (this.playMode == 1) {//随机播放
+				this.preList = this.playlist.slice(0);
+				this.preList.sort(function(a, b) {
+					return Math.random() > 0.5 ? -1 : 1;
+				});
+			} else {//单曲循环
+				this.preList = [this.songId];
+			}
+			console.log(this.preList);
+			console.log(this.playlist);
+		},
+		//列表控制
+		listControl: function(num) {
+			var self = this;
+			var audio = document.getElementById("audio");
+			if (self.playMode == 2) {//单曲循环
+				audio.currentTime = 0;
+				self.getSongInfo();
+				self.playListener();
+			} else {//列表或者随机
+				if (num == 1) {//下一首
+					for (var i = 0; i < self.preList.length; i++) {
+						if (self.preList[i] == self.songId) {
+							if (i == self.preList.length - 1) {
+								self.songId = self.preList[0];
+							} else {
+								self.songId = self.preList[i + 1];
+							}
+							break;
+						}
+					}
+				} else {//上一首
+					for (var i = 0; i < self.preList.length; i++) {
+						if (self.preList[i] == self.songId) {
+							if (i == 0) {
+								self.songId = self.preList[self.preList.length - 1];
+							} else {
+								self.songId = self.preList[i - 1];
+							}
+							break;
+						}
+					}
+				}
+				self.$router.push("/song/" + self.songId);
+				// self.$router.go({name: "song", params: {id: self.songId}});//直接刷新
+			}
 		},
 		//播放控制
 		playControl: function() {
@@ -187,8 +266,8 @@ export default {
 		},
 		//播放监听
 		playListener: function() {
-			var audio = document.getElementById("audio");
 			var self = this;
+			var audio = document.getElementById("audio");
 			audio.addEventListener("loadeddata", function() {
 				// 加载之后才可以拖动进度条
 
@@ -203,7 +282,6 @@ export default {
 			}, false);
 			audio.addEventListener("pause", function() {
 				if (audio.currentTime == audio.duration) {
-					audio.stop();
 					audio.currentTime = 0;
 				}
 			}, false);
@@ -211,12 +289,14 @@ export default {
 				self.progressMove();
 			}, false);
 			audio.addEventListener("ended", function() {
-				//默认单曲播放
-
+				//取消单曲播放
 				console.log("end");
+				self.listControl(1);
 			}, false);
 		},
 		getSongLyric: function(lyric) {
+			var lyricWrapper = document.getElementById("lyric-wrapper");
+			lyricWrapper.style.top = 0;
 			var items = [];
 			items = lyric.split("\n");
 			items.pop();
@@ -237,31 +317,42 @@ export default {
 			});
 		},
 		getSongOffset: function() {
-			// setInterval(function() {
-				var self = this;
-				self.preLine = 0;
-				var lyricWrapper = document.getElementById("lyric-wrapper");
-				for (var i = 0; i < self.lyricArray.length - 1; i++) {
-					var lyric = self.lyricArray[i];
+			var self = this;
+			self.preLine = 0;
+			var lyricWrapper = document.getElementById("lyric-wrapper");
+			for (var i = 0; i < self.lyricArray.length; i++) {
+				var lyric = self.lyricArray[i];
+				var lyricTime = (parseInt(lyric.m * 60) + parseInt(lyric.s)) + '.' + lyric.ms;
+				if (i != self.lyricArray.length - 1) {
 					var lyricNext = self.lyricArray[i + 1];
-					var lyricTime = (parseInt(lyric.m * 60) + parseInt(lyric.s)) + '.' + lyric.ms;
 					var lyricTimeNext = (parseInt(lyricNext.m * 60) + parseInt(lyricNext.s)) + '.' + lyricNext.ms;
 					if (self.currentTime >= lyricTime && self.currentTime <= lyricTimeNext) {
 						self.preLine = i;
-						self.lyricArray[self.preLine].isLinePlay = true;
-						self.lyricArray[self.preLine - 1].isLinePlay = false;
+						self.lyricArray[i].isLinePlay = true;
+						if (i != 0) {
+							self.lyricArray[i - 1].isLinePlay = false;
+						}
+						break;
+					}
+				} else {
+					if (self.currentTime >= lyricTime) {
+						self.preLine = i;
+						self.lyricArray[i].isLinePlay = true;
+						self.lyricArray[i - 1].isLinePlay = false;
 						break;
 					}
 				}
-				if (self.preLine > 2) {
-					lyricWrapper.style.top = (2 - self.preLine) * 40 + "px";
-				}
-			// }, 500);
+			}
+			if (self.preLine > 2) {
+				lyricWrapper.style.top = (2 - self.preLine) * 40 + "px";
+			}
 		},
 		getSongInfo: function() {
-			var songId = this.$router.history.current.params.id;
+			this.songId = this.$router.history.current.params.id;
+			var songId = this.songId;
+			console.log(songId);
 			this.$http.get('songs/' + songId).then(function(data) {
-				console.log(data.body);
+				// console.log(data.body);
 				this.songInfo = data.body;
 				this.songSrc = "src/assets/song/" + this.songInfo.md5 + ".mp3";
 				//设置背景
@@ -284,6 +375,7 @@ export default {
 	},
 	mounted: function() {
 		this.playListener();
+		this.preList = this.playlist.slice(0);//
 	}
 }
 </script>
@@ -310,6 +402,24 @@ export default {
 		width: 100%;
 		height: 100%;
 		position: relative;
+		.song-cover {
+			position: relative;
+			padding-top: 10px;
+			height: 300px;
+			.song-head {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				.song-return {
+					margin-top: 10px;
+					margin-left: 10px;
+					width: 36px;
+					height: 36px;
+					cursor: pointer;
+				}
+			}
+		}
 		.song-lyric {
 			position: relative;
 			background: transparent;
@@ -334,7 +444,7 @@ export default {
 					.lyric-line {
 						line-height: 40px;
 						height: 40px;
-						color: #dedede;
+						color: #ccc;
 						overflow: hidden;
 						text-overflow:ellipsis;
 						white-space: nowrap;
@@ -354,6 +464,7 @@ export default {
 					}
 					.lyric-high {
 						color: #fff !important;
+						filter: contrast(3);
 					}
 				}
 			}
@@ -418,16 +529,31 @@ export default {
 				}
 			}
 			.control-button {
-				padding: 10px;
-				.button-play {
+				margin: 15px 10px auto 15px;
+				div {
+					position: relative;
+					display: inline-block;
+					width: 19%;
+				}
+				img {
+					position: absolute;
+					display: block;
 					width: 48px;
 					height: 48px;
 					margin: auto;
-					img {
-						width: 100%;
-						height: 100%;
-						cursor: pointer;
-					}
+					top: 0;
+					bottom: 0;
+					left: 0;
+					right: 0;
+					cursor: pointer;
+				}
+				.button-list img {
+					width: 40px;
+					height: 38px;
+				}
+				.button-mode img {
+					width: 46px;
+					height: 46px;
 				}
 			}
 		}
