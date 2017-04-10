@@ -4,7 +4,9 @@
 		<div class="song-wrap">
 			<div class="song-cover">
 				<div class="song-head">
-					<img src="../assets/image/backhome.png" class="song-return">
+					<img src="../assets/image/backhome.png" class="song-return" v-on:click="pageReturn()">
+					<img v-show="!isCollected" src="../assets/image/collect1.png" class="song-collect" v-on:click="songCollect()">
+					<img v-show="isCollected" src="../assets/image/collect2.png" class="song-collect" v-on:click="songCollect()">
 				</div>
 				<div id="fc-wrapper" v-bind:class="[isCoverOpen? fcOpen: '', fcWrapper]">
 					<!-- right-most handle piece -->
@@ -122,7 +124,8 @@ export default {
 			allTime: 0,
 			currentTime: 0,
 			songId: "",
-			preList: []
+			preList: [],
+			isCollected: false
 		}
 	},
 	computed: {
@@ -162,6 +165,11 @@ export default {
 			get() {
 				return this.$store.state.playlist;
 			}
+		},
+		pageflag: {
+			get() {
+				return this.$store.state.pageflag;
+			}
 		}
 	},
 	watch: {
@@ -171,6 +179,24 @@ export default {
 		}
 	},
 	methods: {
+		//歌曲收藏
+		songCollect: function() {
+			this.songId = this.$router.history.current.params.id;
+			var songId = this.songId;
+			this.$http.put('songs/collection/' + songId).then(function(data) {
+				this.isCollected = !this.isCollected;
+			}, function(data) {
+				console.log(data.msg);
+			});
+		},
+		//返回home页
+		pageReturn: function() {
+			switch(this.pageflag) {
+				case 0: this.$router.push("/home/recommend"); break;
+				case 1: this.$router.push("/home/rank"); break;
+				case 2: this.$router.push("/home/person"); break;
+			}
+		},
 		//时间转换
 		toggleTime: function(time) {
 			var minute = time/60;
@@ -262,7 +288,7 @@ export default {
 				self.proBar = progressBac.clientWidth;
 		        drag.style.left = (audio.currentTime / audio.duration) * (self.proBar) + "px";
 		        speed.style.left = -((self.proBar) - (audio.currentTime / audio.duration) * (self.proBar)) + "px";
-		    }, 250);
+		    }, 500);
 		},
 		//播放监听
 		playListener: function() {
@@ -355,6 +381,7 @@ export default {
 				// console.log(data.body);
 				this.songInfo = data.body;
 				this.songSrc = "src/assets/song/" + this.songInfo.md5 + ".mp3";
+				this.isCollected = this.songInfo.isCollected;
 				//设置背景
 				var song_background = "src/assets/image/album/" + this.songInfo["album_img"];
 				document.getElementById("song-back").style.background = "url(" + song_background + ") no-repeat fixed center/cover";
@@ -412,8 +439,17 @@ export default {
 				left: 0;
 				width: 100%;
 				.song-return {
+					float: left;
 					margin-top: 10px;
 					margin-left: 10px;
+					width: 36px;
+					height: 36px;
+					cursor: pointer;
+				}
+				.song-collect {
+					float: right;
+					margin-top: 10px;
+					margin-right: 10px;
 					width: 36px;
 					height: 36px;
 					cursor: pointer;

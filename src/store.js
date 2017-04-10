@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 const store = new Vuex.Store({
   	state: {
+  		pageflag: 0,//分页标志位
     	keyword: "",//搜索关键词
     	history: [],//搜索历史记录
     	collection: [],//存储收藏曲目
@@ -13,6 +14,9 @@ const store = new Vuex.Store({
 		timeCurrent: "00:00"//播放当前时长
   	},
   	mutations: {
+  		pageflagSet (state, pageflag) {
+  			state.pageflag = pageflag;
+  		},
     	keywordSet (state, search) {
       		state.keyword = search;
 		},

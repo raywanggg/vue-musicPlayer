@@ -10,9 +10,9 @@
 		</div>
 		<content v-show="!isSearch">
 			<ul class="homeTab-wrap">
-				<li v-bind:class="[flag == 0? isActive: '']" v-on:click="flag = 0"><router-link to="recommend">推荐</router-link></li>
-				<li v-bind:class="[flag == 1? isActive: '']" v-on:click="flag = 1"><router-link to="rank">排行</router-link></li>
-				<li v-bind:class="[flag == 2? isActive: '']" v-on:click="flag = 2"><router-link to="person">我的</router-link></li>
+				<li v-bind:class="[pageflag == 0? isActive: '']" v-on:click="pageflag = 0"><router-link to="recommend">推荐</router-link></li>
+				<li v-bind:class="[pageflag == 1? isActive: '']" v-on:click="pageflag = 1"><router-link to="rank">排行</router-link></li>
+				<li v-bind:class="[pageflag == 2? isActive: '']" v-on:click="pageflag = 2"><router-link to="person">我的</router-link></li>
 			</ul>
 		</content>
 		<router-view name="viewall"></router-view>
@@ -24,7 +24,7 @@ import { mapState } from 'vuex';
 export default {
 	data: function() {
 		return {
-			flag: 0,
+			// flag: 0,
 			isActive: "active",//bind中绑定的是data中的数据，data到类的映射
 			isSearch: false
 		}
@@ -37,6 +37,14 @@ export default {
 			},
 			set(keyword) {
 				this.$store.commit("keywordSet", keyword);
+			}
+		},
+		pageflag: {
+			get() {
+				return this.$store.state.pageflag;
+			},
+			set(pageflag) {
+				this.$store.commit("pageflagSet", pageflag);
 			}
 		}
 	},
@@ -59,7 +67,7 @@ export default {
 		backHome: function() {
 			this.isSearch = false;
 			this.keyword = "";
-			switch(this.flag) {//路由改变不用监听
+			switch(this.pageflag) {//路由改变不用监听
 				case 0: this.$router.push("recommend"); break;
 				case 1: this.$router.push("rank"); break;
 				case 2: this.$router.push("person"); break;
