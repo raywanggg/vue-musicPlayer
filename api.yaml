@@ -163,6 +163,31 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
+  '/songs':
+    post:
+      summary: batch search by ids
+      description: 
+        通过id数组批量获取歌曲信息
+      tags:
+        - Song
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: ids
+          required: true
+          in: body
+          type: string
+      responses:
+        '200':
+          description: array of songs
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Song'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
   '/lyrics/{md5}':
     get:
       summary: a lyric
