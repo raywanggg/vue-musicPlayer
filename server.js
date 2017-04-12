@@ -1,5 +1,6 @@
 var co = require('co');
 var fs = require('co-fs');
+var parse = require('co-body');
 var logger = require('koa-logger');
 var Router = require('koa-router');
 var staticServe = require('koa-static');
@@ -108,6 +109,12 @@ router
         }
         ctx.status = 200;
         fs.writeFile(`./database/my_collected.js`, JSON.stringify(collectedIds), {'encoding': 'utf8'});
+    }))
+    .post('/songs', co.wrap(function* (ctx, next) {
+        var songIds = yield parse.json(ctx);
+        let songsList = JSON.parse(yield fs.readFile(`./database/songs_list.js`, 'utf8'));
+        let result = songsList.filter((song) => songIds.includes(song.id));
+        ctx.body = result;
     }));
 
 //router for lyrics
