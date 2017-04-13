@@ -453,6 +453,12 @@ export default {
 	},
 	created: function() {
 		this.getSongInfo();
+		// window.onbeforeunload = function() {
+		// 	window.location.href = "localhost:8088";
+		// };
+		// if (performance.navigation.type == '1') {
+		// 	window.location.href = "localhost:8088";
+		// }
 	},
 	mounted: function() {
 		this.playListener();
