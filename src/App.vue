@@ -31,6 +31,14 @@ export default {
 			this.$router.push("home/recommend");
 		}
 	}
+	// created: function() {
+	// 	if (performance.navigation.type == '1') {
+	// 		window.location.href = "localhost:8088";
+	// 	}
+	// 	window.onbeforeunload = function() {
+	// 		window.location.href = "localhost:8088";
+	// 	};
+	// }
 }
 </script>
 <style>

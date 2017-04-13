@@ -100,8 +100,24 @@
 						<img src="../assets/image/song-next.png" v-on:click="listControl(1)">
 					</div>
 					<div class="button-list">
-						<img src="../assets/image/song-list.png">
+						<img src="../assets/image/song-list.png" v-on:click="listShow();isListshow = !isListshow">
 					</div>
+				</div>
+			</div>
+			<div v-if="isListshow" class="song-list">
+				<p class="list-head">
+					<span v-show="playMode == 0">列表循环（{{ listNum }}）</span>
+					<span v-show="playMode == 1">随机播放（{{ listNum }}）</span>
+					<span v-show="playMode == 2">单曲循环（{{ listNum }}）</span>
+					<img src="../assets/image/mode-close.png" class="mode-close" v-on:click="isListshow = !isListshow">
+				</p>
+				<div class="list-body">
+					<ul>
+						<li v-for="item in listArray">
+							<p v-bind:class="{isplaying: item.isPlay}">{{ item.name }}<span v-bind:class="{isplaying: item.isPlay}"> - {{ item.singer }}</span></p>
+							<img src="../assets/image/song-delete.png" class="song-delete" v-on:click="listUpdate(item.id)">
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -125,7 +141,10 @@ export default {
 			currentTime: 0,
 			songId: "",
 			preList: [],
-			isCollected: false
+			listArray: [],
+			isCollected: false,
+			isListshow: false,
+			listNum: 0
 		}
 	},
 	computed: {
@@ -181,9 +200,9 @@ export default {
 	methods: {
 		//歌曲收藏
 		songCollect: function() {
-			this.songId = this.$router.history.current.params.id;
-			var songId = this.songId;
-			this.$http.put('songs/collection/' + songId).then(function(data) {
+			// this.songId = this.$router.history.current.params.id;
+			// var songId = this.songId;
+			this.$http.put('songs/collection/' + this.songId).then(function(data) {
 				this.isCollected = !this.isCollected;
 			}, function(data) {
 				console.log(data.msg);
@@ -199,10 +218,8 @@ export default {
 		},
 		//时间转换
 		toggleTime: function(time) {
-			var minute = time/60;
-		    var minutes = parseInt(minute);
-		    var second = time%60;
-		    var seconds = parseInt(second);
+		    var minutes = parseInt(time/60);
+		    var seconds = parseInt(time%60);
 		    if (minutes < 10) {
 		        minutes = "0" + minutes;
 		    }
@@ -228,6 +245,41 @@ export default {
 			console.log(this.preList);
 			console.log(this.playlist);
 		},
+		//列表显示
+		listShow: function() {
+			this.$http.post('songs', this.preList).then(function(data) {
+				var self = this;
+				self.listNum = self.preList.length;
+				console.log(data.body);
+				if (data.body.length != 0) {
+					self.listArray = data.body;
+					self.listArray.map(function(value, index){
+						if (value.id == self.songId) {
+							return value.isPlay = true;
+						} else {
+							return value.isPlay = false;
+						}
+					});
+				}
+			}, function(data) {
+				console.log(data.msg);
+			});
+		},
+		//列表更新
+		listUpdate: function(playId) {
+			var self = this;
+			if (playId == self.songId) {//关闭当前播放切换下首
+				self.listControl(1);
+			}
+			//刷新数组
+			self.preList = self.preList.filter(function(value, index) {
+				if (value != playId) {
+					return true;
+				}
+			});
+			//重新渲染
+			self.listShow();
+		},
 		//列表控制
 		listControl: function(num) {
 			var self = this;
@@ -237,6 +289,7 @@ export default {
 				self.getSongInfo();
 				self.playListener();
 			} else {//列表或者随机
+				console.log(self.preList);
 				if (num == 1) {//下一首
 					for (var i = 0; i < self.preList.length; i++) {
 						if (self.preList[i] == self.songId) {
@@ -382,6 +435,7 @@ export default {
 				this.songInfo = data.body;
 				this.songSrc = "src/assets/song/" + this.songInfo.md5 + ".mp3";
 				this.isCollected = this.songInfo.isCollected;
+				// console.log(this.songInfo);
 				//设置背景
 				var song_background = "src/assets/image/album/" + this.songInfo["album_img"];
 				document.getElementById("song-back").style.background = "url(" + song_background + ") no-repeat fixed center/cover";
@@ -410,193 +464,5 @@ export default {
 	@import "../../css/common";
 	@import "../../css/cover-demo";
 	@import "../../css/cover-style";
-	.song-wrapper {
-		width: 100%;
-		height: 100%;
-		position: relative;
-	}
-	#song-back {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		/*background: url() no-repeat fixed center/cover;*/
-		filter: blur(25px);
-		opacity: 0.8;
-	}
-	.song-wrap {
-		width: 100%;
-		height: 100%;
-		position: relative;
-		.song-cover {
-			position: relative;
-			padding-top: 10px;
-			height: 300px;
-			.song-head {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				.song-return {
-					float: left;
-					margin-top: 10px;
-					margin-left: 10px;
-					width: 36px;
-					height: 36px;
-					cursor: pointer;
-				}
-				.song-collect {
-					float: right;
-					margin-top: 10px;
-					margin-right: 10px;
-					width: 36px;
-					height: 36px;
-					cursor: pointer;
-				}
-			}
-		}
-		.song-lyric {
-			position: relative;
-			background: transparent;
-			width: 100%;
-			height: calc(80% - 310px);
-			margin: 0;
-			.lyric-content {
-				position: absolute;
-				width: 95%;
-				height: 200px;
-				margin: auto;
-				top: 0;
-				bottom: 0;
-				left: 0;
-				right: 0;
-				overflow: hidden;
-				#lyric-wrapper {
-					position: absolute;
-					top: 0;
-					left: 0;
-					right: 0;
-					.lyric-line {
-						line-height: 40px;
-						height: 40px;
-						color: #ccc;
-						overflow: hidden;
-						text-overflow:ellipsis;
-						white-space: nowrap;
-						span {
-							display: inline-block;
-						}
-						.lyric-time {
-							width: 90px;
-							font-size: 16px;
-							text-align: center;
-						}
-						.lyric-word {
-							width: calc(100% - 90px);
-							font-size: 16px;
-							text-align: center;
-						}
-					}
-					.lyric-high {
-						color: #fff !important;
-						filter: contrast(3);
-					}
-				}
-			}
-		}
-		.song-control {
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			right: 0;
-			height: 140px;
-			/*进度条*/
-			.control-progress {
-				/*padding: 10px;*/
-				position: relative;
-				height: 40px;
-				margin: 20px 8px 0 22px;
-				overflow: hidden;
-				.progressBar{ 
-					position: absolute;
-					width: 75%; 
-					height: 5px;
-					left: 0; 
-					top: 10px;
-					div {
-						position: absolute;
-					}
-					.progressBac {
-						width: 100%;
-						height: 3px;
-						left: 0;
-						top: 0;
-						background: #dedede;
-					}
-					.speed {
-						width: 100%;
-						height: 3px;
-						left: -100%;
-						background: #ea6f5a;
-					}
-					.drag {
-						width: 10px;
-						height: 10px;
-						left: 0;
-						top: -3px;
-						background: #ea6f5a;
-						border: 3px solid #ededed;
-						border-radius: 50%;
-						/*box-shadow: #fff 0 0 5px;  */
-					}
-				}
-				#progressTime {
-					position: absolute;
-					width: 25%;
-					height: 20px;
-					right: 0;
-					top: 5px;
-					.timeDetail {
-						color: #dedede;
-						font-size: 13px;
-						text-align: center;
-					}
-				}
-			}
-			.control-button {
-				margin: 15px 10px auto 15px;
-				div {
-					position: relative;
-					display: inline-block;
-					width: 19%;
-				}
-				img {
-					position: absolute;
-					display: block;
-					width: 48px;
-					height: 48px;
-					margin: auto;
-					top: 0;
-					bottom: 0;
-					left: 0;
-					right: 0;
-					cursor: pointer;
-				}
-				.button-list img {
-					width: 40px;
-					height: 38px;
-				}
-				.button-mode img {
-					width: 46px;
-					height: 46px;
-				}
-			}
-		}
-	}
-	@media (max-height: 640px) {
-		.song-lyric {
-			display: none;
-		}
-	}
+	@import "../../css/songPage.css";
 </style>
