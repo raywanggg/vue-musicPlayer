@@ -144,7 +144,11 @@ export default {
 			listArray: [],
 			isCollected: false,
 			isListshow: false,
-			listNum: 0
+			listNum: 0,
+			startX: 0,//触摸坐标
+			moveX: 0,//滑动距离
+			aboveX: 0//上次滑动距离
+			// timeId: ''
 		}
 	},
 	computed: {
@@ -210,6 +214,7 @@ export default {
 		},
 		//返回home页
 		pageReturn: function() {
+			clearInterval(this.timeId);
 			switch(this.pageflag) {
 				case 0: this.$router.push("/home/recommend"); break;
 				case 1: this.$router.push("/home/rank"); break;
@@ -343,22 +348,57 @@ export default {
 		        speed.style.left = -((self.proBar) - (audio.currentTime / audio.duration) * (self.proBar)) + "px";
 		    }, 500);
 		},
+		//进度条拖拽
+		progressDrag: function() {
+			var self = this;
+		},
+		//拖动监听
+		dragListener: function() {
+			var self = this;
+			var drag = document.getElementById("drag");
+			drag.addEventListener("touchstart", self.touchStart, false);
+			drag.addEventListener("touchmove", self.touchMove, false);
+			drag.addEventListener("touchend", self.touchEnd, false);
+		},
+		touchStart: function(event) {
+			event.preventDefault();
+			this.startX = event.touches[0].pageX;
+		},
+		touchMove: function(e) {
+			event.preventDefault();
+			var drag = document.getElementById("drag");
+			var speed = document.getElementById("speed");
+			this.moveX = event.touches[0].pageX - this.startX;
+			drag.style.left = this.aboveX + this.moveX + "px";
+			speed.style.left = -(this.proBar - (this.aboveX + this.moveX)) + "px";
+
+		},
+		touchEnd: function(e) {
+			event.preventDefault();
+			var drag = document.getElementById("drag");
+			var speed = document.getElementById("speed");
+			this.aboveX = parseInt(drag.style.left);
+			
+		},
+		//播放显示
+		playShow: function() {
+			var self = this;
+			var audio = document.getElementById("audio");
+			self.progressDrag();
+			self.allTime = audio.duration;
+			self.timeAll = self.toggleTime(self.allTime);
+			self.currentTime = audio.currentTime;
+			self.timeCurrent = self.toggleTime(self.currentTime);
+			self.timeId = setInterval(function() {
+				self.currentTime = audio.currentTime;
+				self.timeCurrent = self.toggleTime(self.currentTime);
+			}, 1000);
+		},
 		//播放监听
 		playListener: function() {
 			var self = this;
 			var audio = document.getElementById("audio");
-			audio.addEventListener("loadeddata", function() {
-				// 加载之后才可以拖动进度条
-
-				self.allTime = audio.duration;
-				self.timeAll = self.toggleTime(self.allTime);
-				self.currentTime = audio.currentTime;
-				self.timeCurrent = self.toggleTime(self.currentTime);
-				setInterval(function() {
-					self.currentTime = audio.currentTime;
-					self.timeCurrent = self.toggleTime(self.currentTime);
-				}, 1000);
-			}, false);
+			audio.addEventListener("loadeddata", self.playShow, false);
 			audio.addEventListener("pause", function() {
 				if (audio.currentTime == audio.duration) {
 					audio.currentTime = 0;
@@ -462,7 +502,7 @@ export default {
 	},
 	mounted: function() {
 		this.playListener();
-		this.preList = this.playlist.slice(0);//
+		this.preList = this.playlist.slice(0);
 	}
 }
 </script>
