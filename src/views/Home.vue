@@ -19,14 +19,12 @@
 	</div>
 </template>
 <script>
-// import Search from "./Search.vue";
 import { mapState } from 'vuex';
 export default {
 	data: function() {
 		return {
-			// flag: 0,
-			isActive: "active",//bind中绑定的是data中的数据，data到类的映射
-			isSearch: false
+			isActive: "active"//bind中绑定的是data中的数据，data到类的映射
+			// isSearch: false
 		}
 	},
 
@@ -45,6 +43,14 @@ export default {
 			},
 			set(pageflag) {
 				this.$store.commit("pageflagSet", pageflag);
+			}
+		},
+		isSearch: {
+			get() {
+				return this.$store.state.isSearch;
+			},
+			set(isSearch) {
+				this.$store.commit("isSearchSet", isSearch);
 			}
 		}
 	},

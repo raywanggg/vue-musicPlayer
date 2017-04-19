@@ -2,7 +2,7 @@
 	<div id="app">
 		<div class="home-wrapper">
 			<transition name="turn-page" mode="out-in" v-on:enter="toggleRouter">
-				<div v-if="isShow" @click="isShow = !isShow" class="home-front" key="show1">
+				<div v-if="!isShow" @click="isShow = !isShow" class="home-front" key="show1">
 					<div class="welcome-back"></div>
 					<div class="welcome-text">
 						<img src="src/assets/image/home-logo.png">
@@ -18,27 +18,43 @@
 	</div>
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
 	name: "welcome",
 	data: function() {
 		return {
-			msg: "vue音乐  享生活",
-			isShow: true
+			msg: "vue音乐  享生活"
+			// isShow: true
+		}
+	},
+	computed: {
+		isShow: {
+			get() {
+				return this.$store.state.isShow;
+			},
+			set(isShow) {
+				this.$store.commit("isShowSet", isShow);
+			}
 		}
 	},
 	methods: {
 		toggleRouter: function() {
 			this.$router.push("home/recommend");
 		}
+	},
+	created: function(event) {
+		console.log(JSON.stringify(this.$store.state));
+		window.onbeforeunload = () => {
+			sessionStorage.setItem('store', JSON.stringify(this.$store.state));
+		};
+		// if (performance.navigation.type == 1) {
+		// 	// localStorage.clear();
+		// 	console.log("this page is reload");
+		// } else {
+		// 	// localStorage.clear();
+		// 	console.log("this page is not reload");
+		// }
 	}
-	// created: function() {
-	// 	if (performance.navigation.type == '1') {
-	// 		window.location.href = "localhost:8088";
-	// 	}
-	// 	window.onbeforeunload = function() {
-	// 		window.location.href = "localhost:8088";
-	// 	};
-	// }
 }
 </script>
 <style>

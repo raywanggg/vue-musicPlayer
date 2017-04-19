@@ -32,7 +32,7 @@
 	</div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 export default {
 	name: "result",
 	data: function() {
@@ -44,10 +44,6 @@ export default {
 			remove: "src/assets/image/add3.png"
 		}
 	},
-	// computed: mapState({
-	// 	value: state => state.keyword,
-	// 	words: state => state.history
-	// }),
 	computed: {
 		value: {
 			get() {
@@ -65,13 +61,16 @@ export default {
 				this.$store.commit("listSet", playlist);
 			}
 		},
-		//es6语法
 		...mapState({
 			words: state => state.history
 		})
 	},
 	methods: {
+		// ...mapMutations({
+		// 	setKeyword: 'keywordSet' // 映射
+		// }),
 		getResult: function() {
+			// this.setKeyword('fdf');
 			//渲染列表
 			this.$http.get('songs/search?key=' + this.value).then(function(data) {
 				// console.log(data.body.data);
