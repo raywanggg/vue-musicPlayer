@@ -204,8 +204,6 @@ export default {
 	methods: {
 		//歌曲收藏
 		songCollect: function() {
-			// this.songId = this.$router.history.current.params.id;
-			// var songId = this.songId;
 			this.$http.put('songs/collection/' + this.songId).then(function(data) {
 				this.isCollected = !this.isCollected;
 			}, function(data) {
@@ -215,10 +213,15 @@ export default {
 		//返回home页
 		pageReturn: function() {
 			clearInterval(this.timeId);
-			switch(this.pageflag) {
-				case 0: this.$router.push("/home/recommend"); break;
-				case 1: this.$router.push("/home/rank"); break;
-				case 2: this.$router.push("/home/person"); break;
+			console.log(this.$store.state.isSearch);
+			if (!this.$store.state.isSearch) {
+				switch(this.pageflag) {
+					case 0: this.$router.push("/home/recommend"); break;
+					case 1: this.$router.push("/home/rank"); break;
+					case 2: this.$router.push("/home/person"); break;
+				}
+			} else {
+				this.$router.push("/home/result");
 			}
 		},
 		//时间转换
@@ -467,6 +470,7 @@ export default {
 			}
 		},
 		getSongInfo: function() {
+			//获取路由中歌曲的id
 			this.songId = this.$router.history.current.params.id;
 			var songId = this.songId;
 			console.log(songId);
@@ -475,7 +479,6 @@ export default {
 				this.songInfo = data.body;
 				this.songSrc = "src/assets/song/" + this.songInfo.md5 + ".mp3";
 				this.isCollected = this.songInfo.isCollected;
-				// console.log(this.songInfo);
 				//设置背景
 				var song_background = "src/assets/image/album/" + this.songInfo["album_img"];
 				document.getElementById("song-back").style.background = "url(" + song_background + ") no-repeat fixed center/cover";
@@ -493,12 +496,6 @@ export default {
 	},
 	created: function() {
 		this.getSongInfo();
-		// window.onbeforeunload = function() {
-		// 	window.location.href = "localhost:8088";
-		// };
-		// if (performance.navigation.type == '1') {
-		// 	window.location.href = "localhost:8088";
-		// }
 	},
 	mounted: function() {
 		this.playListener();

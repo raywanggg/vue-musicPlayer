@@ -62,7 +62,7 @@ export default {
 			}
 		},
 		...mapState({
-			words: state => state.history
+			words: state => state.history 
 		})
 	},
 	methods: {

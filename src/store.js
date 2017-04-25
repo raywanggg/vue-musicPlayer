@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 const store = new Vuex.Store({
   	state: {
+  		//先判断sessionStorage里面store是否存在
   		isShow: sessionStorage.getItem('store') && JSON.parse(sessionStorage.getItem('store')).isShow || false,//翻页标志位
   		isSearch: sessionStorage.getItem('store') && JSON.parse(sessionStorage.getItem("store")).isSearch || false,//搜索标志位
   		pageflag: sessionStorage.getItem('store') && JSON.parse(sessionStorage.getItem("store")).pageflag || 0,//分页标志位
