@@ -144,10 +144,10 @@ export default {
 			listArray: [],
 			isCollected: false,
 			isListshow: false,
-			listNum: 0,
-			startX: 0,//触摸坐标
-			moveX: 0,//滑动距离
-			aboveX: 0//上次滑动距离
+			listNum: 0
+			// startX: 0,//触摸坐标
+			// moveX: 0,//滑动距离
+			// aboveX: 0//上次滑动距离
 			// timeId: ''
 		}
 	},
@@ -344,16 +344,14 @@ export default {
 			var drag = document.getElementById("drag");
 			var speed = document.getElementById("speed");
 			this.proBar = progressBac.clientWidth;
+			//进度条每隔0.5s刷新
 			setInterval(function() {
 				//this指向window
 				self.proBar = progressBac.clientWidth;
 		        drag.style.left = (audio.currentTime / audio.duration) * (self.proBar) + "px";
 		        speed.style.left = -((self.proBar) - (audio.currentTime / audio.duration) * (self.proBar)) + "px";
 		    }, 500);
-		},
-		//进度条拖拽
-		progressDrag: function() {
-			var self = this;
+		    // self.dragListener();
 		},
 		//拖动监听
 		dragListener: function() {
@@ -365,33 +363,41 @@ export default {
 		},
 		touchStart: function(event) {
 			event.preventDefault();
-			this.startX = event.touches[0].pageX;
+			this.startX = event.touches[0].pageX;//开始滑动
+			// console.log(this.startX);
 		},
-		touchMove: function(e) {
+		touchMove: function(event) {
 			event.preventDefault();
 			var drag = document.getElementById("drag");
 			var speed = document.getElementById("speed");
-			this.moveX = event.touches[0].pageX - this.startX;
-			drag.style.left = this.aboveX + this.moveX + "px";
-			speed.style.left = -(this.proBar - (this.aboveX + this.moveX)) + "px";
-
+			// this.moveX = event.touches[0].pageX - this.startX;//移动距离
+			drag.style.left = event.touches[0].pageX - 24 + "px";
+			speed.style.left = -(this.proBar - (event.touches[0].pageX - 24)) + "px";
 		},
-		touchEnd: function(e) {
+		touchEnd: function(event) {
 			event.preventDefault();
+			var audio = document.getElementById("audio");
+			var progressBac = document.getElementById("progressBac");
 			var drag = document.getElementById("drag");
 			var speed = document.getElementById("speed");
-			this.aboveX = parseInt(drag.style.left);
-			
+			// this.aboveX = parseInt(drag.style.left);
+			this.proBar = progressBac.clientWidth;
+			this.endX = drag.style.left.replace("px", "");
+			audio.currentTime = (this.endX/this.proBar)*audio.duration;
+			// console.log(this.endX);
+			// console.log(this.endX/this.proBar);
+			this.getSongOffset();
 		},
 		//播放显示
 		playShow: function() {
 			var self = this;
 			var audio = document.getElementById("audio");
-			self.progressDrag();
+			self.dragListener();
 			self.allTime = audio.duration;
 			self.timeAll = self.toggleTime(self.allTime);
 			self.currentTime = audio.currentTime;
 			self.timeCurrent = self.toggleTime(self.currentTime);
+			//播放时间每隔1s刷新
 			self.timeId = setInterval(function() {
 				self.currentTime = audio.currentTime;
 				self.timeCurrent = self.toggleTime(self.currentTime);

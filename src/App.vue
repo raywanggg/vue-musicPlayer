@@ -43,7 +43,6 @@ export default {
 		}
 	},
 	created: function(event) {
-		console.log(JSON.stringify(this.$store.state));
 		window.onbeforeunload = () => {
 			sessionStorage.setItem('store', JSON.stringify(this.$store.state));
 		};
