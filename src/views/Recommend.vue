@@ -77,7 +77,7 @@ export default {
 		height: 30px;
 		margin: 5px auto;
 		box-sizing: border-box;
-		border-left: 5px solid #ea6f5a;
+		border-left: 5px solid var(--color-theme);
 		/*border-bottom: 1px solid #ddd;
 		box-shadow: 5px 5px 5px #ccc;*/
 		p {

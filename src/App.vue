@@ -123,14 +123,14 @@ export default {
 			}
 			h1 {
 				text-align: center;
-				color: #ea6f5a;
+				color: var(--color-theme);
 				/*text-shadow: 2px 2px 4px #dedede;*/
 				text-shadow: 3px 3px 6px #888;
 			}
 			h3 {
 				position: absolute;
 				text-align: center;
-				color: #ea6f5a;
+				color: var(--color-theme);
 				font-style: italic;
 				bottom: 50px;
 				left: 0;

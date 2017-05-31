@@ -384,8 +384,7 @@ export default {
 			this.proBar = progressBac.clientWidth;
 			this.endX = drag.style.left.replace("px", "");
 			audio.currentTime = (this.endX/this.proBar)*audio.duration;
-			// console.log(this.endX);
-			// console.log(this.endX/this.proBar);
+			//   
 			this.getSongOffset();
 		},
 		//播放显示

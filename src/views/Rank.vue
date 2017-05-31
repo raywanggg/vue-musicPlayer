@@ -88,7 +88,7 @@ export default {
 			}
 			p {
 				display: block;
-				border-left: 5px solid #ea6f5a;
+				border-left: 5px solid var(--color-theme);
 			    margin: 5px;
 				font-size: 16px;
 				color: #666;

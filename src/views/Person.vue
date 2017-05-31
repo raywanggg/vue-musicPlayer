@@ -11,7 +11,7 @@
 			</div>
 		</div>
 		<div class="per-body">
-			<p><span>歌曲列表</span></p>
+			<p class="collect-tab"><span>歌曲列表</span></p>
 			<ul class="collect-lists">
 				<li v-for="item in items">
 					<router-link v-bind:to="item.href">
@@ -60,12 +60,14 @@ export default {
 				//歌曲路径
 				var self = this;
 				self.items = data.body.data;
-				console.log(data.body.data);
+				// console.log(data.body.data);
+				self.count = self.items.length;
 				self.playlist = [];
 				self.items.map(function(value, index){
-					console.log(value);
+					// console.log(value);
 					self.playlist[index] = value["id"];
 					value.href = "/song/" + value["id"];
+					value.isCollected = true;
 					return value;
 				});
 			}, function(data) {
@@ -77,7 +79,7 @@ export default {
             // event.stopPropagation();//阻止冒泡
             event.preventDefault();//阻止默认行为
 			this.$http.put('songs/collection/' + id).then(function(data) {
-				console.log("ok");
+				this.fetchLike();
 				// isCollected = !isCollected;//不能及时刷新 
 			}, function(data) {
 				console.log(data.msg);
@@ -92,12 +94,70 @@ export default {
 </script>
 <style scoped>
 	@import "../../css/common";
-	.reco-wrapper {
+	.per-wrapper {
 		width: 100%;
 		height: 100%;
 		overflow-y: auto;
 	}
+	.per-head {
+		padding: 5px;
+    	height: 130px;
+    	background-color: #efefef;
+    	/* overflow: auto; */
+		.per-intro {
+			float: left;
+			width: 65%;
+			height: 100%;
+			img {
+				width: 110px;
+				height: 110px;
+				margin: 10px;
+				border: 1px solid transparent;
+				border-radius: 50%;
+			}
+			span {
+				display: inline-block;
+				line-height: 120px;
+				font-size: 20px;
+				color: #999;
+			}
+		}
+		.per-count {
+			float: left;
+			width: 35%;
+			font-style: italic;
+			margin-top: 10px;
+			margin-bottom: 10px;
+			border-left: 1px solid #dedede;
+			p {
+				font-size: 18px;
+				color: #666;
+				height: 50px;
+				line-height: 50px;
+				text-indent: 20px;
+			}
+		}
+	}
 	.per-body {
+		.collect-tab {
+			width: 100%;
+			height: 35px;
+			font-size: 18px;
+			margin-top: 5px;
+			border-bottom: 2px solid var(--color-theme);
+			cursor: default;
+			span {
+				display: inline-block;
+				margin-left: 30px;
+				height: 35px;
+				line-height: 35px;
+				margin-bottom: -2px;
+				padding-left: 5px;
+				padding-right: 5px;
+				border: 2px solid var(--color-theme);
+				border-bottom-color: #fff;
+			}
+		}
 		.collect-lists {
 			li {
 				display: block;

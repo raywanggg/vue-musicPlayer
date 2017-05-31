@@ -87,7 +87,8 @@ export default {
 	#search {
 		width: 100%;
 		height: 70px;
-		background: #ea6f5a;
+		/*background: var(--color-theme);*/
+		background: var(--color-theme);
 		.search-wrapper {
 			input {
 				width: 70%;
@@ -130,12 +131,12 @@ export default {
 			border-bottom: 2px solid transparent;
 		}
 		.active {
-			color: #ea6f5a;
-			border-bottom-color: #ea6f5a;
+			color: var(--color-theme);
+			border-bottom-color: var(--color-theme);
 		}
 		a {
 			display: inline-block;
-			color: #ea6f5a;
+			color: var(--color-theme);
 			width: 100%;
 			height: 100%;
 		}
