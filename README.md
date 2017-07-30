@@ -6,5 +6,12 @@
 #### 2、one command window: npm run dev
 #### 3、another command window: npm start 
 #### 4、open localhost:8088 in browser
-
-
+![](https://github.com/raywanggg/vue-musicPlayer/tree/master/src/assets/image/view/cover.png)
+![](https://github.com/raywanggg/vue-musicPlayer/tree/master/src/assets/image/view/mine.png)
+![](https://github.com/raywanggg/vue-musicPlayer/tree/master/src/assets/image/view/rank.png)
+![](https://github.com/raywanggg/vue-musicPlayer/tree/master/src/assets/image/view/recommend.png)
+![](https://github.com/raywanggg/vue-musicPlayer/tree/master/src/assets/image/view/search.png)
+![](https://github.com/raywanggg/vue-musicPlayer/tree/master/src/assets/image/view/song1.png)
+![](https://github.com/raywanggg/vue-musicPlayer/tree/master/src/assets/image/view/song2.png)
+![](https://github.com/raywanggg/vue-musicPlayer/tree/master/src/assets/image/view/song3.png)
+![](https://github.com/raywanggg/vue-musicPlayer/tree/master/src/assets/image/view/song4.png)
